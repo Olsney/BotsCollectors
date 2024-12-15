@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 736843068785000008}
   - component: {fileID: 5207680409951220777}
   m_Layer: 0
-  m_Name: ResourceSpawner
+  m_Name: MineralSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,5 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94eb17e342b25e942a547663e997fff1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _resourceContainer: {fileID: 0}
-  _resourcePrefab: {fileID: 5465397213683583176, guid: d6e6fb14a903b5b488881fd988b3c2f5, type: 3}
+  _prefab: {fileID: 0}
+  mineralContainer: {fileID: 0}
+  mineralPrefab: {fileID: 0}

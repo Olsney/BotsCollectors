@@ -1,21 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using CodeBase.Extensions;
-using CodeBase.SpawnableObjects.Resources;
+using CodeBase.SpawnableObjects.Minerals;
 using UnityEngine;
 
 namespace CodeBase.Services
 {
-    public class ResourceSpawner : Spawner
+    public class MineralSpawner : Spawner<Mineral>
     {
-        [SerializeField] private ResourceContainer _resourceContainer;
-        [SerializeField] private Resource _resourcePrefab;
+        [SerializeField] private MineralContainer _mineralContainer;
 
         private List<Vector3> _spawnPoints = new List<Vector3>();
 
         private void Start()
         {
-            _spawnPoints = _resourceContainer.SpawnPoints;
+            _spawnPoints = _mineralContainer.SpawnPoints;
 
             StartCoroutine(StartResourceSpawning());
         }
@@ -33,12 +32,6 @@ namespace CodeBase.Services
 
                 yield return wait;
             }
-        }
-
-        private void Spawn(Vector3 position)
-        {
-            Instantiate(_resourcePrefab);
-            _resourcePrefab.Init(position);
         }
     }
 }

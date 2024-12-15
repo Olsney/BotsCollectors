@@ -3,11 +3,11 @@ using UnityEngine;
 
 namespace CodeBase.Services
 {
-    public class Spawner : MonoBehaviour
+    public class Spawner<T> : MonoBehaviour where T : SpawnableObject
     {
-        [SerializeField] protected SpawnableObject _prefab;
+        [SerializeField] protected T _prefab;
         
-        protected void Spawn(Vector3 position)
+        public void Spawn(Vector3 position)
         {
             Instantiate(_prefab);
             _prefab.Init(position);

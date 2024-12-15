@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using CodeBase.SpawnableObjects.Resources;
 using UnityEngine;
 
-namespace CodeBase.Services
+namespace CodeBase.SpawnableObjects.Minerals
 {
-    public class ResourceContainer : MonoBehaviour
+    public class MineralContainer : MonoBehaviour
     {
         private List<Vector3> _spawnPoints;
         
@@ -14,7 +13,7 @@ namespace CodeBase.Services
         {
             _spawnPoints = new List<Vector3>();
             
-            foreach (IResourceSpawnPosition resourceSpawnPosition in gameObject.GetComponentsInChildren<IResourceSpawnPosition>())
+            foreach (IMineralSpawnPosition resourceSpawnPosition in gameObject.GetComponentsInChildren<IMineralSpawnPosition>())
                 _spawnPoints.Add(resourceSpawnPosition.Position);
         }
     }

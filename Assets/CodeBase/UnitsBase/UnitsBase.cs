@@ -38,7 +38,7 @@ namespace CodeBase.UnitsBase
 
             while (spawnedAmount < collectorsAmount)
             {
-                _collectorFactory.Create(DataExtension.GetRandomPosition(_spawnPoints));
+                _collectorFactory.Spawn(DataExtension.GetRandomPosition(_spawnPoints));
                 spawnedAmount++;
 
                 yield return waitTime;
