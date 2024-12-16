@@ -16,11 +16,16 @@ namespace CodeBase.SpawnableObjects.Collectors
 
         private void Update()
         {
+            _navMesh.isStopped = false;
+            _navMesh.acceleration = 
+            _navMesh.speed = 10f;
             _navMesh.SetDestination(_targetPosition);
         }
 
-        public void SetDirection(Vector3 point)
+        public void SetTargetPoint(Vector3 point)
         {
+            Debug.Log($"Идем к {point}");
+            
             _targetPosition = point;
         }
     }

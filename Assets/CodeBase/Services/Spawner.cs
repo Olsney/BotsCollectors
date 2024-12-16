@@ -1,4 +1,5 @@
-﻿using CodeBase.SpawnableObjects;
+﻿using CodeBase.CollectorsBases;
+using CodeBase.SpawnableObjects;
 using UnityEngine;
 
 namespace CodeBase.Services
@@ -11,6 +12,12 @@ namespace CodeBase.Services
         {
             Instantiate(_prefab);
             _prefab.Init(position);
+        }
+
+        public void Spawn(Vector3 position, Vector3 dropPlace)
+        {
+            Instantiate(_prefab);
+            _prefab.Init(position, dropPlace);
         }
     }
 }

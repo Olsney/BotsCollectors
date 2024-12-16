@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace CodeBase.UnitsBase
+namespace CodeBase.CollectorsBases
 {
     public class UnitSpawnPointContainer : MonoBehaviour
     {

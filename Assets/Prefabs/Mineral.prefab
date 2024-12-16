@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2669413091845254607}
   - component: {fileID: 8943756547030726187}
   - component: {fileID: 9217827167778098719}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -122,7 +122,7 @@ GameObject:
   - component: {fileID: 5607678315319508087}
   - component: {fileID: 6986368505387293897}
   - component: {fileID: 4023930588858771716}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -230,7 +230,7 @@ GameObject:
   - component: {fileID: 1900890894830705755}
   - component: {fileID: 515385787983610867}
   - component: {fileID: 3417219341948415248}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -336,7 +336,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3848417477913630037}
   - component: {fileID: 5465397213683583176}
-  m_Layer: 0
+  - component: {fileID: 3136643638513200587}
+  m_Layer: 6
   m_Name: Mineral
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -373,3 +374,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7940c3d3b62482281342b967aea38c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &3136643638513200587
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6270465160218026762}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.8, y: 0.16606218, z: 0}
+  m_Center: {x: 0, y: -0.1719689, z: -0.08098221}

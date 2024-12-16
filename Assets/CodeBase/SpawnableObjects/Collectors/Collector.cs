@@ -1,6 +1,84 @@
-﻿namespace CodeBase.SpawnableObjects.Collectors
+﻿using System.Collections;
+using CodeBase.CollectorsBases;
+using CodeBase.SpawnableObjects.Minerals;
+using UnityEngine;
+
+namespace CodeBase.SpawnableObjects.Collectors
 {
-    public class Collector : SpawnableObject
+    [RequireComponent(typeof(CollectorMover))]
+    public class Collector : SpawnableObject, ICollector
     {
+        [SerializeField] private float _permissibleDifference;
+        [SerializeField] private float _takeRadius;
+
+        private CollectorMover _collectorMover;
+
+        public bool IsWorking { get; private set; }
+        public Transform Transform => transform;
+
+        private void Awake()
+        {
+            _collectorMover = GetComponent<CollectorMover>();
+        }
+
+        public void Work(Vector3 destionation)
+        {
+            IsWorking = true;
+
+            Debug.Log($"{destionation} - точка перед вызовом метода SetTargetPoint");
+
+            _collectorMover.SetTargetPoint(destionation);
+
+            StartCoroutine(CalculateDistance(destionation));
+
+        }
+
+        private IEnumerator CalculateDistance(Vector3 destionation)
+        {
+            float delay = 1f;
+            WaitForSeconds wait = new(delay);
+            
+            // if ((transform.position - destionation).sqrMagnitude <= _permissibleDifference)
+            while (Vector3.Distance(transform.position, destionation) > _permissibleDifference)
+            {
+                if (TryFindMineral(out Mineral mineral))
+                {
+                    TakeMineral(mineral);
+                    // GoBase();
+                }
+
+                yield return wait;
+            }
+        }
+
+        private void OnTriggerEnter(Collider collider)
+        {
+            if (collider.TryGetComponent(out CollectorsBase dummy))
+                IsWorking = false;
+        }
+
+        public void GoBase(Vector3 point) =>
+            _collectorMover.SetTargetPoint(point);
+
+        private bool TryFindMineral(out Mineral mineral)
+        {
+            Collider[] colliders = Physics.OverlapSphere(transform.position, _takeRadius);
+            mineral = default;
+
+            foreach (Collider collider in colliders)
+            {
+                if (collider.TryGetComponent(out mineral))
+                {
+                    Debug.Log("Сборщик нашел минерал и стоит к нему близко");
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private void TakeMineral(Mineral mineral) =>
+            mineral.Bind(Transform);
     }
 }

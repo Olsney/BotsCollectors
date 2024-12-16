@@ -44,6 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94eb17e342b25e942a547663e997fff1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _prefab: {fileID: 0}
-  mineralContainer: {fileID: 0}
-  mineralPrefab: {fileID: 0}
+  _prefab: {fileID: 5465397213683583176, guid: d6e6fb14a903b5b488881fd988b3c2f5, type: 3}
+  _mineralContainer: {fileID: 0}

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using CodeBase.CollectorsBases;
+using UnityEngine;
 
 namespace CodeBase.SpawnableObjects
 {
@@ -7,6 +8,12 @@ namespace CodeBase.SpawnableObjects
         public void Init(Vector3 position)
         {
             transform.position = position;
+        }
+
+        public void Init(Vector3 position, Vector3 dropPlace)
+        {
+            transform.position = position;
+            
         }
     }
 }
