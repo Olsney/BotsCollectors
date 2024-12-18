@@ -15,22 +15,21 @@ namespace CodeBase.CollectorsBases
     }
 
     [RequireComponent(typeof(CollectorFactory))]
-    [RequireComponent(typeof(BaseDropPlace))]
     public class CollectorsBase : MonoBehaviour
     {
         [SerializeField] private UnitSpawnPointContainer _container;
         [SerializeField] private float _scanRadius;
         [SerializeField] private BaseAreaTrigger _baseAreaTrigger;
+        [SerializeField] private Transform _dropPlace;
 
         private CollectorFactory _collectorFactory;
         private List<Vector3> _spawnPoints;
         private List<Collector> _collectors;
         private List<Mineral> _minerals;
-        private BaseDropPlace _dropPlace;
 
         private Coroutine _collectorsSpawningCoroutine;
         private Coroutine _findMineralsCoroutine;
-        
+
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.blue;
@@ -41,7 +40,6 @@ namespace CodeBase.CollectorsBases
         {
             _collectors = new List<Collector>();
             _minerals = new List<Mineral>();
-            _dropPlace = GetComponent<BaseDropPlace>();
         }
 
         private void OnEnable()
@@ -89,7 +87,7 @@ namespace CodeBase.CollectorsBases
 
             if (minerals.Count < 0)
                 return;
-            
+
             SetWorkToCollector(minerals);
         }
 
@@ -108,6 +106,9 @@ namespace CodeBase.CollectorsBases
 
                 Collector collector = GetRandomFreeCollector();
 
+                if (collector == null)
+                    return;
+
                 Debug.Log($"{mineral.Position} - позиция позиция");
 
                 collector.Work(mineral.Position);
@@ -122,10 +123,12 @@ namespace CodeBase.CollectorsBases
             {
                 if (collector.IsWorking == false)
                 {
+                    freeCollectors.Add(collector);
                 }
-
-                freeCollectors.Add(collector);
             }
+
+            if (freeCollectors.Count == 0)
+                return default;
 
             return freeCollectors[Random.Range(0, _collectors.Count)];
         }
@@ -153,7 +156,7 @@ namespace CodeBase.CollectorsBases
 
             while (spawnedAmount < collectorsAmount)
             {
-                _collectorFactory.Spawn(DataExtension.GetRandomPosition(_spawnPoints), _dropPlace.transform.position);
+                _collectorFactory.Spawn(DataExtension.GetRandomPosition(_spawnPoints), _dropPlace.position);
                 spawnedAmount++;
 
                 yield return waitTime;
@@ -168,6 +171,5 @@ namespace CodeBase.CollectorsBases
 
         private void OnResourceEntered(Mineral mineral) =>
             _minerals.Add(mineral);
-
     }
 }

@@ -585,7 +585,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9002223847322678077}
-  - component: {fileID: 1118315392334207379}
   m_Layer: 0
   m_Name: DropPlace
   m_TagString: Untagged
@@ -608,18 +607,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3646575624325142280}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1118315392334207379
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4291983363392857244}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: acad9211686249cfa7b70bdf88c1e991, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4481869798394902066
 GameObject:
   m_ObjectHideFlags: 0
@@ -1276,6 +1263,7 @@ MonoBehaviour:
   _container: {fileID: 36840290532914942}
   _scanRadius: 100
   _baseAreaTrigger: {fileID: 4007050139143976593}
+  _dropPlace: {fileID: 9002223847322678077}
 --- !u!114 &1419135657385671920
 MonoBehaviour:
   m_ObjectHideFlags: 0

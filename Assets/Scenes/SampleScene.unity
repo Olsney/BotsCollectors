@@ -720,6 +720,10 @@ PrefabInstance:
       value: MineralSpawner
       objectReference: {fileID: 0}
     - target: {fileID: 5207680409951220777, guid: 494011458828aa744ab9fdc34fd9e9bf, type: 3}
+      propertyPath: Prefab
+      value: 
+      objectReference: {fileID: 5465397213683583176, guid: d6e6fb14a903b5b488881fd988b3c2f5, type: 3}
+    - target: {fileID: 5207680409951220777, guid: 494011458828aa744ab9fdc34fd9e9bf, type: 3}
       propertyPath: _prefab
       value: 
       objectReference: {fileID: 5465397213683583176, guid: d6e6fb14a903b5b488881fd988b3c2f5, type: 3}
@@ -805,6 +809,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1419135657385671920, guid: 7f7eecbb959d861478178e943f875cdb, type: 3}
+      propertyPath: Prefab
+      value: 
+      objectReference: {fileID: 1691461118197076262, guid: 22c401203b73f9e4e9b7c95ef034664b, type: 3}
     - target: {fileID: 3646575624325142280, guid: 7f7eecbb959d861478178e943f875cdb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
