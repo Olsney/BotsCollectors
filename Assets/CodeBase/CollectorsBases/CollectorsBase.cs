@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using CodeBase.Extensions;
 using CodeBase.Services;
@@ -9,11 +10,6 @@ using Random = UnityEngine.Random;
 
 namespace CodeBase.CollectorsBases
 {
-    public interface IBaseDropPlace
-    {
-        public Vector3 DropPlacePoint { get; }
-    }
-
     [RequireComponent(typeof(CollectorFactory))]
     public class CollectorsBase : MonoBehaviour
     {
@@ -25,6 +21,7 @@ namespace CodeBase.CollectorsBases
         private CollectorFactory _collectorFactory;
         private List<Vector3> _spawnPoints;
         private List<Collector> _collectors;
+        private List<Collector> _freeCollectors;
         private List<Mineral> _minerals;
 
         private Coroutine _collectorsSpawningCoroutine;
@@ -96,18 +93,23 @@ namespace CodeBase.CollectorsBases
             if (minerals == null)
                 return;
 
-            if (_collectors.Count == 0)
+            if (FindFreeCollectors().Count == 0)
+            {
+                Debug.Log("Не нашли свободных коллекторов, вышли из метода SetWorkToCollector");
                 return;
-
-
+            }
+            
             foreach (Mineral mineral in minerals)
             {
                 Debug.Log("Отправили работягу работать");
 
                 Collector collector = GetRandomFreeCollector();
+                
 
                 if (collector == null)
                     return;
+                
+                Debug.Log("Получили наружу свободного сборщика");
 
                 Debug.Log($"{mineral.Position} - позиция позиция");
 
@@ -115,22 +117,36 @@ namespace CodeBase.CollectorsBases
             }
         }
 
-        private Collector GetRandomFreeCollector()
+        private List<Collector> FindFreeCollectors()
         {
-            var freeCollectors = new List<Collector>();
+            List<Collector> freeCollectors = new List<Collector>();
 
-            foreach (var collector in _collectors)
+            foreach (Collector collector in _collectors)
             {
-                if (collector.IsWorking == false)
-                {
+                if(collector.IsWorking == false)
                     freeCollectors.Add(collector);
-                }
             }
 
-            if (freeCollectors.Count == 0)
-                return default;
+            return freeCollectors;
+        }
 
-            return freeCollectors[Random.Range(0, _collectors.Count)];
+        private Collector GetRandomFreeCollector()
+        {
+            List<Collector> freeCollectors = FindFreeCollectors();
+            
+            Debug.Log($"{freeCollectors.Count} - freeCollectors count");
+
+            if (freeCollectors.Count == 0)
+            {
+                Debug.Log("Возвращаем default потому что count 0");
+                return default;
+            }
+
+            var randomCollector = freeCollectors[Random.Range(0, _collectors.Count - 1)];
+
+            Debug.Log($"{randomCollector.name}, {freeCollectors.IndexOf(randomCollector)} - random collector index");
+
+            return randomCollector;
         }
 
         private IEnumerator FindMineralsJob()
@@ -142,7 +158,7 @@ namespace CodeBase.CollectorsBases
             {
                 TryFindMinerals();
 
-                yield return delay;
+                yield return waitTime;
             }
         }
 
