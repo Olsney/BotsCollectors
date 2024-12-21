@@ -73,10 +73,10 @@ namespace CodeBase.CollectorsBases
             {
                 if (collider.gameObject.TryGetComponent(out Mineral mineral))
                 {
-                    Debug.Log("Нашли минералы");
-
-                    if (mineral != null)
+                    if (mineral != null && mineral.IsTaken == false)
                         minerals.Add(mineral);
+                    
+                    Debug.Log("Нашли минералы");
                 }
             }
 
@@ -114,6 +114,8 @@ namespace CodeBase.CollectorsBases
                 Debug.Log($"{mineral.Position} - позиция позиция");
 
                 collector.Work(mineral.Position);
+
+                Debug.Log($"collector отправлен на позицию минерала - {mineral.Position}");
             }
         }
 
@@ -142,7 +144,7 @@ namespace CodeBase.CollectorsBases
                 return default;
             }
 
-            var randomCollector = freeCollectors[Random.Range(0, _collectors.Count - 1)];
+            var randomCollector = freeCollectors[Random.Range(0, _collectors.Count)];
 
             Debug.Log($"{randomCollector.name}, {freeCollectors.IndexOf(randomCollector)} - random collector index");
 
@@ -172,7 +174,7 @@ namespace CodeBase.CollectorsBases
 
             while (spawnedAmount < collectorsAmount)
             {
-                _collectorFactory.Spawn(DataExtension.GetRandomPosition(_spawnPoints), _dropPlace.position);
+                _collectorFactory.Spawn(DataExtension.GetRandomPosition(_spawnPoints), _dropPlace.transform.position);
                 spawnedAmount++;
 
                 yield return waitTime;

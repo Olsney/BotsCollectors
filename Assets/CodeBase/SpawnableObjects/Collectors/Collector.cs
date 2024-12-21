@@ -26,7 +26,7 @@ namespace CodeBase.SpawnableObjects.Collectors
         {
             IsWorking = true;
 
-            Debug.Log($"{destionation} - точка перед вызовом метода SetTargetPoint");
+            Debug.Log($"{destionation} - точка перед вызовом метода SetTargetPoint из Work");
 
             _collectorMover.SetTargetPoint(destionation);
 
@@ -37,6 +37,8 @@ namespace CodeBase.SpawnableObjects.Collectors
         {
             base.Init(position, dropPlace);
             _dropPlace = dropPlace;
+            
+            Debug.Log($"Я сборщик и мой dropPlace - {_dropPlace}");
         }
 
         private IEnumerator CalculateDistance(Vector3 destionation)
@@ -50,7 +52,7 @@ namespace CodeBase.SpawnableObjects.Collectors
                 if (TryFindMineral(out Mineral mineral))
                 {
                     TakeMineral(mineral);
-                    GoBase(_dropPlace);
+                    GoBase();
                 }
 
                 yield return wait;
@@ -63,8 +65,12 @@ namespace CodeBase.SpawnableObjects.Collectors
                 IsWorking = false;
         }
 
-        public void GoBase(Vector3 point) =>
-            _collectorMover.SetTargetPoint(point);
+        public void GoBase()
+        {
+            Debug.Log($"Я иду на базу, мой dropPlace - {_dropPlace}");
+            
+            _collectorMover.SetTargetPoint(_dropPlace);
+        }
 
         private bool TryFindMineral(out Mineral mineral)
         {
