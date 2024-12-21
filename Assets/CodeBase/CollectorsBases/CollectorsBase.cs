@@ -50,7 +50,7 @@ namespace CodeBase.CollectorsBases
         {
             _baseAreaTrigger.CollectorEntered -= OnCollectorEntered;
             _baseAreaTrigger.CollectorExited -= OnCollectorExited;
-            _baseAreaTrigger.ResourceEntered += OnResourceEntered;
+            _baseAreaTrigger.ResourceEntered -= OnResourceEntered;
         }
 
         private void Start()
@@ -144,7 +144,7 @@ namespace CodeBase.CollectorsBases
                 return default;
             }
 
-            var randomCollector = freeCollectors[Random.Range(0, _collectors.Count)];
+            var randomCollector = freeCollectors[Random.Range(0, freeCollectors.Count)];
 
             Debug.Log($"{randomCollector.name}, {freeCollectors.IndexOf(randomCollector)} - random collector index");
 
@@ -174,7 +174,7 @@ namespace CodeBase.CollectorsBases
 
             while (spawnedAmount < collectorsAmount)
             {
-                _collectorFactory.Spawn(DataExtension.GetRandomPosition(_spawnPoints), _dropPlace.transform.position);
+                _collectorFactory.Spawn(DataExtension.GetRandomPosition(_spawnPoints), _dropPlace.position);
                 spawnedAmount++;
 
                 yield return waitTime;
@@ -187,7 +187,10 @@ namespace CodeBase.CollectorsBases
         private void OnCollectorExited(Collector collector) =>
             _collectors.Remove(collector);
 
-        private void OnResourceEntered(Mineral mineral) =>
+        private void OnResourceEntered(Mineral mineral)
+        {
             _minerals.Add(mineral);
+            mineral.enabled = false;
+        }
     }
 }

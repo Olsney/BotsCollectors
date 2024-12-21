@@ -12,7 +12,7 @@ namespace CodeBase.SpawnableObjects.Collectors
         [SerializeField] private float _takeRadius;
 
         private CollectorMover _collectorMover;
-        private Vector3 _dropPlace;
+        [SerializeField] private Vector3 _dropPlace;
 
         public bool IsWorking { get; private set; }
         public Transform Transform => transform;
@@ -36,7 +36,7 @@ namespace CodeBase.SpawnableObjects.Collectors
         public override void Init(Vector3 position, Vector3 dropPlace)
         {
             base.Init(position, dropPlace);
-            _dropPlace = dropPlace;
+            _dropPlace = new Vector3(dropPlace.x, dropPlace.y, dropPlace.z);
             
             Debug.Log($"Я сборщик и мой dropPlace - {_dropPlace}");
         }
