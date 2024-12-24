@@ -12,33 +12,31 @@ namespace CodeBase.SpawnableObjects.Collectors
         private void Awake()
         {
             _navMesh = GetComponent<NavMeshAgent>();
-            _navMesh.speed = 0;
-            // _navMesh.isStopped = false;
-            // _navMesh.acceleration = 10f;
-            // _navMesh.speed = 10f;
+            StopMove();
+            
             _navMesh.SetDestination(_targetPosition);
         }
 
         private void Update()
         {
-            _navMesh.isStopped = false;
-
-            _navMesh.SetDestination(_targetPosition);
+            // _navMesh.SetDestination(_targetPosition);
         }
 
         public void SetTargetPoint(Vector3 point)
         {
-            Debug.Log($"Идем к {point}");
-            //
-
-
+            _navMesh.isStopped = false;
+            _navMesh.acceleration = 5f;
             _navMesh.speed = 5f;
 
-            _targetPosition = point;
+            // _targetPosition = point;
+
+            _navMesh.SetDestination(new Vector3(point.x, point.y, point.z));
         }
 
         public void StopMove()
         {
+            _navMesh.acceleration = 0f;
+            _navMesh.isStopped = true;
             _navMesh.speed = 0;
         }
     }

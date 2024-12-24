@@ -75,12 +75,8 @@ namespace CodeBase.CollectorsBases
                 {
                     if (mineral != null && mineral.IsTaken == false)
                         minerals.Add(mineral);
-                    
-                    Debug.Log("Нашли минералы");
                 }
             }
-
-            Debug.Log($"Количество материалов на сцене: {minerals.Count}");
 
             if (minerals.Count < 0)
                 return;
@@ -93,29 +89,16 @@ namespace CodeBase.CollectorsBases
             if (minerals == null)
                 return;
 
-            if (FindFreeCollectors().Count == 0)
-            {
-                Debug.Log("Не нашли свободных коллекторов, вышли из метода SetWorkToCollector");
-                return;
-            }
-            
             foreach (Mineral mineral in minerals)
             {
-                Debug.Log("Отправили работягу работать");
-
                 Collector collector = GetRandomFreeCollector();
-                
+
 
                 if (collector == null)
                     return;
-                
-                Debug.Log("Получили наружу свободного сборщика");
 
-                Debug.Log($"{mineral.Position} - позиция позиция");
 
                 collector.Work(mineral.Position);
-
-                Debug.Log($"collector отправлен на позицию минерала - {mineral.Position}");
             }
         }
 
@@ -125,7 +108,7 @@ namespace CodeBase.CollectorsBases
 
             foreach (Collector collector in _collectors)
             {
-                if(collector.IsWorking == false)
+                if (collector.IsWorking == false)
                     freeCollectors.Add(collector);
             }
 
@@ -135,18 +118,14 @@ namespace CodeBase.CollectorsBases
         private Collector GetRandomFreeCollector()
         {
             List<Collector> freeCollectors = FindFreeCollectors();
-            
-            Debug.Log($"{freeCollectors.Count} - freeCollectors count");
+
 
             if (freeCollectors.Count == 0)
             {
-                Debug.Log("Возвращаем default потому что count 0");
                 return default;
             }
 
             var randomCollector = freeCollectors[Random.Range(0, freeCollectors.Count)];
-
-            Debug.Log($"{randomCollector.name}, {freeCollectors.IndexOf(randomCollector)} - random collector index");
 
             return randomCollector;
         }
@@ -183,6 +162,7 @@ namespace CodeBase.CollectorsBases
 
         private void OnCollectorEntered(Collector collector)
         {
+            Debug.Log("Collector entered on base");
             _collectors.Add(collector);
             collector.FinishWork();
         }
@@ -193,7 +173,7 @@ namespace CodeBase.CollectorsBases
         private void OnResourceEntered(Mineral mineral)
         {
             Debug.Log($"Mineral OnResourceEntered");
-            
+
             _minerals.Add(mineral);
             mineral.transform.parent = transform;
             mineral.gameObject.SetActive(false);
