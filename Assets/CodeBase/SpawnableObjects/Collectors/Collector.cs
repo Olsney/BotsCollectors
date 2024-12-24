@@ -20,6 +20,7 @@ namespace CodeBase.SpawnableObjects.Collectors
         private void Awake()
         {
             _collectorMover = GetComponent<CollectorMover>();
+            _collectorMover.StopMove();
         }
 
         public void Work(Vector3 destionation)
@@ -30,22 +31,23 @@ namespace CodeBase.SpawnableObjects.Collectors
 
             _collectorMover.SetTargetPoint(destionation);
 
-            StartCoroutine(CalculateDistance(destionation));
+            StartCoroutine(CalculateDistanceToMineral(destionation));
+            
         }
 
         public override void Init(Vector3 position, Vector3 dropPlace)
         {
             base.Init(position, dropPlace);
             _dropPlace = new Vector3(dropPlace.x, dropPlace.y, dropPlace.z);
-            
+
             Debug.Log($"Я сборщик и мой dropPlace - {_dropPlace}");
         }
 
-        private IEnumerator CalculateDistance(Vector3 destionation)
+        private IEnumerator CalculateDistanceToMineral(Vector3 destionation)
         {
             float delay = 1f;
             WaitForSeconds wait = new(delay);
-            
+
             // if ((transform.position - destionation).sqrMagnitude <= _permissibleDifference)
             while (Vector3.Distance(transform.position, destionation) > _permissibleDifference)
             {
@@ -57,6 +59,14 @@ namespace CodeBase.SpawnableObjects.Collectors
 
                 yield return wait;
             }
+            
+            FinishWork();
+        }
+
+        private void FinishWork()
+        {
+            _collectorMover.StopMove();
+            IsWorking = false;
         }
 
         private void OnTriggerEnter(Collider collider)

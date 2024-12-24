@@ -12,13 +12,13 @@ namespace CodeBase.SpawnableObjects.Collectors
         private void Awake()
         {
             _navMesh = GetComponent<NavMeshAgent>();
+            _navMesh.speed = 0;
+
         }
 
         private void Update()
         {
             _navMesh.isStopped = false;
-            _navMesh.acceleration = 
-            _navMesh.speed = 10f;
             _navMesh.SetDestination(_targetPosition);
         }
 
@@ -30,8 +30,15 @@ namespace CodeBase.SpawnableObjects.Collectors
             // _navMesh.acceleration = 
             //     _navMesh.speed = 10f;
             // _navMesh.SetDestination(_targetPosition);
-            
+
+            _navMesh.speed = 5f;
+
             _targetPosition = point;
+        }
+
+        public void StopMove()
+        {
+                _navMesh.speed = 0;
         }
     }
 }

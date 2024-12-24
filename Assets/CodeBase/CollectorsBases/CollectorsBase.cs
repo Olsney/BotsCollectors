@@ -181,16 +181,21 @@ namespace CodeBase.CollectorsBases
             }
         }
 
-        private void OnCollectorEntered(Collector collector) =>
+        private void OnCollectorEntered(Collector collector)
+        {
             _collectors.Add(collector);
+        }
 
         private void OnCollectorExited(Collector collector) =>
             _collectors.Remove(collector);
 
         private void OnResourceEntered(Mineral mineral)
         {
+            Debug.Log($"Mineral OnResourceEntered");
+            
             _minerals.Add(mineral);
-            mineral.enabled = false;
+            mineral.transform.parent = transform;
+            mineral.gameObject.SetActive(false);
         }
     }
 }
