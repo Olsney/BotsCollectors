@@ -23,7 +23,8 @@ namespace CodeBase.CollectorsBases
         private List<Collector> _collectors;
         private List<Collector> _freeCollectors;
         private List<Mineral> _minerals;
-        
+        public event Action<int> ResourcesCollected;
+
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.blue;
@@ -177,6 +178,8 @@ namespace CodeBase.CollectorsBases
             _minerals.Add(mineral);
             mineral.transform.parent = transform;
             mineral.gameObject.SetActive(false);
+
+            ResourcesCollected?.Invoke(_minerals.Count);
         }
     }
 }

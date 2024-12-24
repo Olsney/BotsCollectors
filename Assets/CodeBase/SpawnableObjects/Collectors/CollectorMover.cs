@@ -25,18 +25,14 @@ namespace CodeBase.SpawnableObjects.Collectors
             _navMesh.isStopped = false;
             _navMesh.acceleration = 5f;
             _navMesh.speed = 5f;
-
-            // _targetPosition = point;
-
+            
             _navMesh.SetDestination(new Vector3(point.x, 0, point.z));
         }
 
         public void StopMove()
         {
             Debug.Log("StopMove");
-            // _navMesh.acceleration = 0f;
             _navMesh.isStopped = true;
-            // _navMesh.speed = 0f;
         }
     }
 }

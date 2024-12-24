@@ -1,8 +1,5 @@
 ﻿using System.Collections;
-using System.Reflection.Emit;
-using CodeBase.CollectorsBases;
 using CodeBase.SpawnableObjects.Minerals;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace CodeBase.SpawnableObjects.Collectors
@@ -63,8 +60,6 @@ namespace CodeBase.SpawnableObjects.Collectors
 
                 yield return null;
             }
-
-            // FinishWork();
         }
 
         public void FinishWork()
@@ -72,34 +67,14 @@ namespace CodeBase.SpawnableObjects.Collectors
             _collectorMover.StopMove();
             IsWorking = false;
         }
-
-        // private void OnTriggerEnter(Collider collider)
-        // {
-        //     if (collider.TryGetComponent(out CollectorsBase dummy))
-        //         FinishWork();
-        // }
-
+        
         public void GoBase()
         {
             _collectorMover.SetTargetPoint(_dropPlace);
-            // FinishWork();
         }
 
         private bool TryFindMineral(out Mineral mineral)
         {
-            // Collider[] colliders = new Collider[1];
-            //
-            // var collidersCount = Physics.OverlapSphereNonAlloc(transform.position, _takeRadius, colliders, _layerMask);
-            // mineral = default;
-            //
-            //
-            // if (colliders[0].TryGetComponent(out mineral))
-            // {
-            //     return true;
-            // }
-            //
-            // return false;
-
             Collider[] colliders = Physics.OverlapSphere(transform.position, _takeRadius);
             mineral = default;
 
