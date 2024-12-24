@@ -23,10 +23,7 @@ namespace CodeBase.CollectorsBases
         private List<Collector> _collectors;
         private List<Collector> _freeCollectors;
         private List<Mineral> _minerals;
-
-        private Coroutine _collectorsSpawningCoroutine;
-        private Coroutine _findMineralsCoroutine;
-
+        
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.blue;
@@ -59,8 +56,8 @@ namespace CodeBase.CollectorsBases
 
             _collectorFactory = GetComponent<CollectorFactory>();
 
-            _collectorsSpawningCoroutine = StartCoroutine(CollectorsSpawningJob());
-            _findMineralsCoroutine = StartCoroutine(FindMineralsJob());
+            StartCoroutine(CollectorsSpawningJob());
+            StartCoroutine(FindMineralsJob());
         }
 
         private void TryFindMinerals()
@@ -73,7 +70,7 @@ namespace CodeBase.CollectorsBases
             {
                 if (collider.gameObject.TryGetComponent(out Mineral mineral))
                 {
-                    if (mineral != null && mineral.IsTaken == false)
+                    if (mineral != null && mineral.IsAvailable)
                         minerals.Add(mineral);
                 }
             }
@@ -91,13 +88,16 @@ namespace CodeBase.CollectorsBases
 
             foreach (Mineral mineral in minerals)
             {
+                if (mineral.IsAvailable == false)
+                    continue;
+                
+                
                 Collector collector = GetRandomFreeCollector();
-
-
+                
                 if (collector == null)
                     return;
 
-
+                mineral.BecomeUnavailable();
                 collector.Work(mineral.Position);
             }
         }

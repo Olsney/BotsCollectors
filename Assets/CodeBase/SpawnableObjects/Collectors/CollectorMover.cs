@@ -13,13 +13,11 @@ namespace CodeBase.SpawnableObjects.Collectors
         {
             _navMesh = GetComponent<NavMeshAgent>();
             StopMove();
-            
-            _navMesh.SetDestination(_targetPosition);
         }
 
         private void Update()
         {
-            // _navMesh.SetDestination(_targetPosition);
+            Debug.Log(_navMesh.destination);
         }
 
         public void SetTargetPoint(Vector3 point)
@@ -30,14 +28,15 @@ namespace CodeBase.SpawnableObjects.Collectors
 
             // _targetPosition = point;
 
-            _navMesh.SetDestination(new Vector3(point.x, point.y, point.z));
+            _navMesh.SetDestination(new Vector3(point.x, 0, point.z));
         }
 
         public void StopMove()
         {
-            _navMesh.acceleration = 0f;
+            Debug.Log("StopMove");
+            // _navMesh.acceleration = 0f;
             _navMesh.isStopped = true;
-            _navMesh.speed = 0;
+            // _navMesh.speed = 0f;
         }
     }
 }

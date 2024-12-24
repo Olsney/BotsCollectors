@@ -39,31 +39,28 @@ namespace CodeBase.SpawnableObjects.Collectors
         {
             base.Init(position, dropPlace);
             _dropPlace = new Vector3(dropPlace.x, dropPlace.y, dropPlace.z);
-
-            Debug.Log($"Я сборщик и мой dropPlace - {_dropPlace}");
         }
 
         private IEnumerator CalculateDistanceToMineral(Vector3 destionation)
         {
             float delay = 0.1f;
             WaitForSeconds wait = new(delay);
-
-            Debug.Log($"{Vector3.Distance(transform.position, destionation)} - distance between collector and mineral");
-
-            // if ((transform.position - destionation).sqrMagnitude <= _permissibleDifference)
+            
             while (enabled)
             {
                 if (Vector3.Distance(transform.position, destionation) <= _permissibleDifference)
                 {
+                    Debug.Log(TryFindMineral(out Mineral mineralTest));
+                    
                     if (TryFindMineral(out Mineral mineral))
                     {
                         TakeMineral(mineral);
                         GoBase();
-                        
+
                         yield break;
                     }
                 }
-                
+
                 yield return null;
             }
 
@@ -84,25 +81,32 @@ namespace CodeBase.SpawnableObjects.Collectors
 
         public void GoBase()
         {
-            Debug.Log($"Я иду на базу, мой dropPlace - {_dropPlace}");
-
             _collectorMover.SetTargetPoint(_dropPlace);
-            Debug.Log("I'm going BASE! ");
-
             // FinishWork();
         }
 
         private bool TryFindMineral(out Mineral mineral)
         {
-            Collider[] colliders = new Collider[1];
+            // Collider[] colliders = new Collider[1];
+            //
+            // var collidersCount = Physics.OverlapSphereNonAlloc(transform.position, _takeRadius, colliders, _layerMask);
+            // mineral = default;
+            //
+            //
+            // if (colliders[0].TryGetComponent(out mineral))
+            // {
+            //     return true;
+            // }
+            //
+            // return false;
 
-            var collidersCount = Physics.OverlapSphereNonAlloc(transform.position, _takeRadius, colliders, _layerMask);
+            Collider[] colliders = Physics.OverlapSphere(transform.position, _takeRadius);
             mineral = default;
 
-
-            if (colliders[0].TryGetComponent(out mineral))
+            foreach (Collider collider in colliders)
             {
-                return true;
+                if (collider.TryGetComponent(out mineral))
+                    return true;
             }
 
             return false;
