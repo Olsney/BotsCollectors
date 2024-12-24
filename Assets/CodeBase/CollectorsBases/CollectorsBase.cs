@@ -10,31 +10,30 @@ using Random = UnityEngine.Random;
 
 namespace CodeBase.CollectorsBases
 {
-    [RequireComponent(typeof(CollectorFactory))]
+    [RequireComponent(typeof(CollectorSpawner))]
     public class CollectorsBase : MonoBehaviour
     {
         [SerializeField] private UnitSpawnPointContainer _container;
         [SerializeField] private float _scanRadius;
         [SerializeField] private BaseAreaTrigger _baseAreaTrigger;
         [SerializeField] private Transform _dropPlace;
+        [SerializeField] private MineralsScanner _scanner;
+        [SerializeField] private CollectorSpawner _collectorSpawner;
 
-        private CollectorFactory _collectorFactory;
-        private List<Vector3> _spawnPoints;
         private List<Collector> _collectors;
-        private List<Collector> _freeCollectors;
         private List<Mineral> _minerals;
-        public event Action<int> ResourcesCollected;
-
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.blue;
-            Gizmos.DrawSphere(transform.position, _scanRadius);
-        }
+        public event Action<int> ResourceCollected;
 
         private void Awake()
         {
             _collectors = new List<Collector>();
             _minerals = new List<Mineral>();
+        }
+
+        private void Start()
+        {
+            _collectorSpawner.SpawnCollectors();
+            StartCoroutine(FindMineralsJob());
         }
 
         private void OnEnable()
@@ -49,37 +48,6 @@ namespace CodeBase.CollectorsBases
             _baseAreaTrigger.CollectorEntered -= OnCollectorEntered;
             _baseAreaTrigger.CollectorExited -= OnCollectorExited;
             _baseAreaTrigger.ResourceEntered -= OnResourceEntered;
-        }
-
-        private void Start()
-        {
-            _spawnPoints = _container.SpawnPoints;
-
-            _collectorFactory = GetComponent<CollectorFactory>();
-
-            StartCoroutine(CollectorsSpawningJob());
-            StartCoroutine(FindMineralsJob());
-        }
-
-        private void TryFindMinerals()
-        {
-            List<Mineral> minerals = new();
-
-            Collider[] colliders = Physics.OverlapSphere(transform.position, _scanRadius);
-
-            foreach (Collider collider in colliders)
-            {
-                if (collider.gameObject.TryGetComponent(out Mineral mineral))
-                {
-                    if (mineral != null && mineral.IsAvailable)
-                        minerals.Add(mineral);
-                }
-            }
-
-            if (minerals.Count < 0)
-                return;
-
-            SetWorkToCollector(minerals);
         }
 
         private void SetWorkToCollector(List<Mineral> minerals)
@@ -138,24 +106,11 @@ namespace CodeBase.CollectorsBases
 
             while (enabled)
             {
-                TryFindMinerals();
-
-                yield return waitTime;
-            }
-        }
-
-        private IEnumerator CollectorsSpawningJob()
-        {
-            int collectorsAmount = 3;
-            int spawnedAmount = 0;
-            float delay = 3;
-
-            WaitForSeconds waitTime = new WaitForSeconds(delay);
-
-            while (spawnedAmount < collectorsAmount)
-            {
-                _collectorFactory.Spawn(DataExtension.GetRandomPosition(_spawnPoints), _dropPlace.position);
-                spawnedAmount++;
+                if(_scanner.TryFindMinerals(out List<Mineral> minerals))
+                {
+                    SetWorkToCollector(minerals);
+                }
+                
 
                 yield return waitTime;
             }
@@ -173,13 +128,11 @@ namespace CodeBase.CollectorsBases
 
         private void OnResourceEntered(Mineral mineral)
         {
-            Debug.Log($"Mineral OnResourceEntered");
-
             _minerals.Add(mineral);
             mineral.transform.parent = transform;
             mineral.gameObject.SetActive(false);
 
-            ResourcesCollected?.Invoke(_minerals.Count);
+            ResourceCollected?.Invoke(_minerals.Count);
         }
     }
 }

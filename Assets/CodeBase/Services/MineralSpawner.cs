@@ -6,9 +6,11 @@ using UnityEngine;
 
 namespace CodeBase.Services
 {
-    public class MineralSpawner : Spawner<Mineral>
+    public class MineralSpawner : MonoBehaviour
     {
+        [SerializeField] private Mineral _prefab;
         [SerializeField] private MineralContainer _mineralContainer;
+
 
         private List<Vector3> _spawnPoints = new List<Vector3>();
 
@@ -17,6 +19,12 @@ namespace CodeBase.Services
             _spawnPoints = _mineralContainer.SpawnPoints;
 
             StartCoroutine(StartResourceSpawning());
+        }
+        
+        public void Spawn(Vector3 position)
+        {
+            Instantiate(_prefab);
+            _prefab.Init(position);
         }
 
         private IEnumerator StartResourceSpawning()

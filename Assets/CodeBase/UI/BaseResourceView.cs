@@ -16,7 +16,7 @@ namespace CodeBase.UI
             _mainCamera = Camera.main;
 
         private void OnEnable() => 
-            _collectorsBase.ResourcesCollected += OnResourcesCollected;
+            _collectorsBase.ResourceCollected += OnResourcesCollected;
 
         private void LateUpdate() => 
             ConfigureLooking();

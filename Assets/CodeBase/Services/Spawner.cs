@@ -9,16 +9,16 @@ namespace CodeBase.Services
     {
         [SerializeField] protected T Prefab;
         
-        public void Spawn(Vector3 position)
-        {
-            Instantiate(Prefab);
-            Prefab.Init(position);
-        }
+        // public void Spawn(Vector3 position)
+        // {
+        //     Instantiate(Prefab);
+        //     Prefab.Init(position);
+        // }
 
-        public void Spawn(Vector3 position, Vector3 dropPlace)
-        {
-            Instantiate(Prefab);
-            Prefab.Init(position, dropPlace);
-        }
+        // public void Spawn(Vector3 position, Vector3 dropPlace)
+        // {
+        //     Instantiate(Prefab);
+        //     Prefab.Init(position, dropPlace);
+        // }
     }
 }
