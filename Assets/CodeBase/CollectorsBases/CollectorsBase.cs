@@ -184,6 +184,7 @@ namespace CodeBase.CollectorsBases
         private void OnCollectorEntered(Collector collector)
         {
             _collectors.Add(collector);
+            collector.FinishWork();
         }
 
         private void OnCollectorExited(Collector collector) =>

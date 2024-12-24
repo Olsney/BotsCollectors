@@ -13,12 +13,16 @@ namespace CodeBase.SpawnableObjects.Collectors
         {
             _navMesh = GetComponent<NavMeshAgent>();
             _navMesh.speed = 0;
-
+            // _navMesh.isStopped = false;
+            // _navMesh.acceleration = 10f;
+            // _navMesh.speed = 10f;
+            _navMesh.SetDestination(_targetPosition);
         }
 
         private void Update()
         {
             _navMesh.isStopped = false;
+
             _navMesh.SetDestination(_targetPosition);
         }
 
@@ -26,10 +30,7 @@ namespace CodeBase.SpawnableObjects.Collectors
         {
             Debug.Log($"Идем к {point}");
             //
-            // _navMesh.isStopped = false;
-            // _navMesh.acceleration = 
-            //     _navMesh.speed = 10f;
-            // _navMesh.SetDestination(_targetPosition);
+
 
             _navMesh.speed = 5f;
 
@@ -38,7 +39,7 @@ namespace CodeBase.SpawnableObjects.Collectors
 
         public void StopMove()
         {
-                _navMesh.speed = 0;
+            _navMesh.speed = 0;
         }
     }
 }

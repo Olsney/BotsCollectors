@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Reflection.Emit;
 using CodeBase.CollectorsBases;
 using CodeBase.SpawnableObjects.Minerals;
 using UnityEngine;
@@ -10,9 +11,9 @@ namespace CodeBase.SpawnableObjects.Collectors
     {
         [SerializeField] private float _permissibleDifference;
         [SerializeField] private float _takeRadius;
+        [SerializeField] private Vector3 _dropPlace;
 
         private CollectorMover _collectorMover;
-        [SerializeField] private Vector3 _dropPlace;
 
         public bool IsWorking { get; private set; }
         public Transform Transform => transform;
@@ -32,7 +33,6 @@ namespace CodeBase.SpawnableObjects.Collectors
             _collectorMover.SetTargetPoint(destionation);
 
             StartCoroutine(CalculateDistanceToMineral(destionation));
-            
         }
 
         public override void Init(Vector3 position, Vector3 dropPlace)
@@ -45,7 +45,7 @@ namespace CodeBase.SpawnableObjects.Collectors
 
         private IEnumerator CalculateDistanceToMineral(Vector3 destionation)
         {
-            float delay = 1f;
+            float delay = 0.5f;
             WaitForSeconds wait = new(delay);
 
             // if ((transform.position - destionation).sqrMagnitude <= _permissibleDifference)
@@ -59,11 +59,11 @@ namespace CodeBase.SpawnableObjects.Collectors
 
                 yield return wait;
             }
-            
-            FinishWork();
+
+            // FinishWork();
         }
 
-        private void FinishWork()
+        public void FinishWork()
         {
             _collectorMover.StopMove();
             IsWorking = false;
@@ -78,8 +78,11 @@ namespace CodeBase.SpawnableObjects.Collectors
         public void GoBase()
         {
             Debug.Log($"Я иду на базу, мой dropPlace - {_dropPlace}");
-            
+
             _collectorMover.SetTargetPoint(_dropPlace);
+            Debug.Log("I'm going BASE! ");
+
+            // FinishWork();
         }
 
         private bool TryFindMineral(out Mineral mineral)
