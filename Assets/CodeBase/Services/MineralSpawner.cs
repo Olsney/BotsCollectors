@@ -17,11 +17,6 @@ namespace CodeBase.Services
             StartCoroutine(StartResourceSpawning());
         }
         
-        // private void Start()
-        // {
-        //     StartCoroutine(StartResourceSpawning());
-        // }
-
         private void Spawn(Vector3 position)
         {
             Mineral mineral = Instantiate(_prefab);

@@ -16,13 +16,5 @@ namespace CodeBase.SpawnableObjects.Minerals
             foreach (IMineralSpawnPosition resourceSpawnPosition in gameObject.GetComponentsInChildren<IMineralSpawnPosition>())
                 _spawnPoints.Add(resourceSpawnPosition.Position);
         }
-
-        // private void Awake()
-        // {
-        //     _spawnPoints = new List<Vector3>();
-        //     
-        //     foreach (IMineralSpawnPosition resourceSpawnPosition in gameObject.GetComponentsInChildren<IMineralSpawnPosition>())
-        //         _spawnPoints.Add(resourceSpawnPosition.Position);
-        // }
     }
 }
