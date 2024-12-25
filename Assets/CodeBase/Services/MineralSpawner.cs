@@ -8,17 +8,24 @@ namespace CodeBase.Services
     public class MineralSpawner : MonoBehaviour
     {
         [SerializeField] private Mineral _prefab;
-        [SerializeField] private MineralContainer _mineralContainer;
         
-        private void Start()
+        private MineralContainer _mineralContainer;
+
+        public void Construct(MineralContainer mineralContainer)
         {
+            _mineralContainer = mineralContainer;
             StartCoroutine(StartResourceSpawning());
         }
         
-        public void Spawn(Vector3 position)
+        // private void Start()
+        // {
+        //     StartCoroutine(StartResourceSpawning());
+        // }
+
+        private void Spawn(Vector3 position)
         {
-            Instantiate(_prefab);
-            _prefab.Init(position);
+            Mineral mineral = Instantiate(_prefab);
+            mineral.Init(position);
         }
 
         private IEnumerator StartResourceSpawning()

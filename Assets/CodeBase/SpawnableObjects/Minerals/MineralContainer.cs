@@ -9,12 +9,20 @@ namespace CodeBase.SpawnableObjects.Minerals
         
         public List<Vector3> SpawnPoints => new List<Vector3>(_spawnPoints);
 
-        private void Awake()
+        public void Construct()
         {
             _spawnPoints = new List<Vector3>();
             
             foreach (IMineralSpawnPosition resourceSpawnPosition in gameObject.GetComponentsInChildren<IMineralSpawnPosition>())
                 _spawnPoints.Add(resourceSpawnPosition.Position);
         }
+
+        // private void Awake()
+        // {
+        //     _spawnPoints = new List<Vector3>();
+        //     
+        //     foreach (IMineralSpawnPosition resourceSpawnPosition in gameObject.GetComponentsInChildren<IMineralSpawnPosition>())
+        //         _spawnPoints.Add(resourceSpawnPosition.Position);
+        // }
     }
 }

@@ -19,8 +19,8 @@ namespace CodeBase.Services
 
         private void Spawn(Vector3 position, Vector3 dropPlace)
         {
-            Instantiate(_prefab);
-            _prefab.Init(position, dropPlace);
+            Collector collector = Instantiate(_prefab);
+            collector.Init(position, dropPlace);
         }
         
         private IEnumerator CollectorsSpawningJob()

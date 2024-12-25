@@ -20,14 +20,25 @@ namespace CodeBase.CollectorsBases
         [SerializeField] private CollectorSpawner _collectorSpawner;
 
         private List<Collector> _collectors;
-        private List<Mineral> _minerals;
-        public event Action<int> ResourceCollected;
 
-        private void Awake()
+        public void Construct()
         {
             _collectors = new List<Collector>();
             _minerals = new List<Mineral>();
+            
+            // _collectorSpawner.SpawnCollectors();
+            // StartCoroutine(FindMineralsJob());
         }
+
+        private List<Mineral> _minerals;
+
+        public event Action<int> ResourceCollected;
+
+        // private void Awake()
+        // {
+        //     _collectors = new List<Collector>();
+        //     _minerals = new List<Mineral>();
+        // }
 
         private void Start()
         {

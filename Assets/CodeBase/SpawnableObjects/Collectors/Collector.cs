@@ -6,7 +6,7 @@ using UnityEngine;
 namespace CodeBase.SpawnableObjects.Collectors
 {
     [RequireComponent(typeof(CollectorMover))]
-    public class Collector : SpawnableObject
+    public class Collector : MonoBehaviour
     {
         [SerializeField] private float _permissibleDifference;
         [SerializeField] private float _takeRadius;
@@ -33,9 +33,9 @@ namespace CodeBase.SpawnableObjects.Collectors
             StartCoroutine(InteractWithMineral(destionation));
         }
 
-        public override void Init(Vector3 position, Vector3 dropPlace)
+        public void Init(Vector3 position, Vector3 dropPlace)
         {
-            base.Init(position, dropPlace);
+            transform.position = position;
             _dropPlace = new Vector3(dropPlace.x, dropPlace.y, dropPlace.z);
         }
 
@@ -66,8 +66,8 @@ namespace CodeBase.SpawnableObjects.Collectors
             _collectorMover.StopMove();
             IsWorking = false;
         }
-        
-        public void GoBase()
+
+        private void GoBase()
         {
             _collectorMover.SetTargetPoint(_dropPlace);
         }
