@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using CodeBase.Extensions;
 using CodeBase.SpawnableObjects.Minerals;
 using UnityEngine;
@@ -10,14 +9,9 @@ namespace CodeBase.Services
     {
         [SerializeField] private Mineral _prefab;
         [SerializeField] private MineralContainer _mineralContainer;
-
-
-        private List<Vector3> _spawnPoints = new List<Vector3>();
-
+        
         private void Start()
         {
-            _spawnPoints = _mineralContainer.SpawnPoints;
-
             StartCoroutine(StartResourceSpawning());
         }
         
@@ -34,7 +28,7 @@ namespace CodeBase.Services
 
             while (enabled)
             {
-                Vector3 position = DataExtension.GetRandomPosition(_spawnPoints);
+                Vector3 position = DataExtension.GetRandomPosition(_mineralContainer.SpawnPoints);
                 
                 Spawn(position);
 

@@ -1,7 +1,5 @@
-﻿using System;
-using CodeBase.CollectorsBases;
+﻿using CodeBase.CollectorsBases;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace CodeBase.UI

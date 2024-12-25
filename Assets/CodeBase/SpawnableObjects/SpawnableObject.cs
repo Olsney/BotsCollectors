@@ -1,5 +1,4 @@
-﻿using CodeBase.CollectorsBases;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CodeBase.SpawnableObjects
 {

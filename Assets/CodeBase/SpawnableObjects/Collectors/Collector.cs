@@ -1,11 +1,12 @@
 ﻿using System.Collections;
+using CodeBase.Extensions;
 using CodeBase.SpawnableObjects.Minerals;
 using UnityEngine;
 
 namespace CodeBase.SpawnableObjects.Collectors
 {
     [RequireComponent(typeof(CollectorMover))]
-    public class Collector : SpawnableObject, ICollector
+    public class Collector : SpawnableObject
     {
         [SerializeField] private float _permissibleDifference;
         [SerializeField] private float _takeRadius;
@@ -29,7 +30,7 @@ namespace CodeBase.SpawnableObjects.Collectors
 
             _collectorMover.SetTargetPoint(destionation);
 
-            StartCoroutine(CalculateDistanceToMineral(destionation));
+            StartCoroutine(InteractWithMineral(destionation));
         }
 
         public override void Init(Vector3 position, Vector3 dropPlace)
@@ -38,17 +39,15 @@ namespace CodeBase.SpawnableObjects.Collectors
             _dropPlace = new Vector3(dropPlace.x, dropPlace.y, dropPlace.z);
         }
 
-        private IEnumerator CalculateDistanceToMineral(Vector3 destionation)
+        private IEnumerator InteractWithMineral(Vector3 destionation)
         {
             float delay = 0.1f;
             WaitForSeconds wait = new(delay);
             
             while (enabled)
             {
-                if (Vector3.Distance(transform.position, destionation) <= _permissibleDifference)
+                if (DataExtension.SqrDistance(transform.position, destionation) <= _permissibleDifference)
                 {
-                    Debug.Log(TryFindMineral(out Mineral mineralTest));
-                    
                     if (TryFindMineral(out Mineral mineral))
                     {
                         TakeMineral(mineral);
@@ -89,11 +88,5 @@ namespace CodeBase.SpawnableObjects.Collectors
 
         private void TakeMineral(Mineral mineral) =>
             mineral.Bind(Transform);
-
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, _takeRadius);
-        }
     }
 }

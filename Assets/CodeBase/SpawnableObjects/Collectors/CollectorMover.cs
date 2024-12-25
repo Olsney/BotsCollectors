@@ -15,11 +15,6 @@ namespace CodeBase.SpawnableObjects.Collectors
             StopMove();
         }
 
-        private void Update()
-        {
-            Debug.Log(_navMesh.destination);
-        }
-
         public void SetTargetPoint(Vector3 point)
         {
             _navMesh.isStopped = false;
@@ -31,7 +26,6 @@ namespace CodeBase.SpawnableObjects.Collectors
 
         public void StopMove()
         {
-            Debug.Log("StopMove");
             _navMesh.isStopped = true;
         }
     }

@@ -13,26 +13,17 @@ namespace CodeBase.CollectorsBases
         
         private void OnTriggerEnter(Collider other)
         {
-            if (other.TryGetComponent(out Collector collector))
-            {
+            if (other.TryGetComponent(out Collector collector)) 
                 CollectorEntered?.Invoke(collector);
-                Debug.Log("Collector entered invoked");
-            }
 
-            if (other.TryGetComponent(out Mineral mineral))
-            {
+            if (other.TryGetComponent(out Mineral mineral)) 
                 ResourceEntered?.Invoke(mineral);
-                Debug.Log("Resource entered invoked");
-            }
         }
 
         private void OnTriggerExit(Collider other)
         {
-            if (other.TryGetComponent(out Collector collector))
-            {
+            if (other.TryGetComponent(out Collector collector)) 
                 CollectorExited?.Invoke(collector);
-                Debug.Log("Collector exited entered invoked");
-            }
         }
     }
 }

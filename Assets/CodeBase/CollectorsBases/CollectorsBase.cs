@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using CodeBase.Extensions;
 using CodeBase.Services;
 using CodeBase.SpawnableObjects.Collectors;
 using CodeBase.SpawnableObjects.Minerals;
@@ -118,7 +117,6 @@ namespace CodeBase.CollectorsBases
 
         private void OnCollectorEntered(Collector collector)
         {
-            Debug.Log("Collector entered on base");
             _collectors.Add(collector);
             collector.FinishWork();
         }
