@@ -18,7 +18,7 @@ namespace CodeBase.CollectorsBases
             {
                 if (collider.gameObject.TryGetComponent(out Mineral mineral))
                 {
-                    if (mineral != null && mineral.IsAvailable)
+                    if (mineral != null)
                         minerals.Add(mineral);
                 }
             }
