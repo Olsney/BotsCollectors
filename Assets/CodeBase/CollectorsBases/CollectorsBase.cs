@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using CodeBase.Extensions;
 using CodeBase.Services;
 using CodeBase.SpawnableObjects.Collectors;
 using CodeBase.SpawnableObjects.Minerals;
@@ -18,13 +20,15 @@ namespace CodeBase.CollectorsBases
 
         private List<Collector> _collectors;
         private List<Mineral> _minerals;
-        
+        private MineralsData _mineralsData;
+
         public event Action<int> ResourceCollected;
 
         public void Construct()
         {
             _collectors = new List<Collector>();
             _minerals = new List<Mineral>();
+            _mineralsData = new MineralsData();
         }
 
         private void Start()
@@ -61,6 +65,8 @@ namespace CodeBase.CollectorsBases
             _minerals.Add(mineral);
             mineral.transform.parent = transform;
             mineral.gameObject.SetActive(false);
+            _mineralsData.RemoveReservation(mineral);
+            _mineralsData.DebugFreeMineralsCount();
 
             ResourceCollected?.Invoke(_minerals.Count);
         }
@@ -70,20 +76,40 @@ namespace CodeBase.CollectorsBases
             if (minerals == null)
                 return;
 
-            foreach (Mineral mineral in minerals)
+            IEnumerable<Mineral> minerals2 = _mineralsData.GetFreeMinerals(minerals).OrderBy(mineral =>
+                DataExtension.SqrDistance(transform.position, mineral.transform.position));
+
+            _mineralsData.DebugFreeMineralsCount();
+
+            if (minerals2.Any() == false)
+                return;
+
+
+            foreach (var mineral in minerals2)
             {
-                if (mineral.IsAvailable == false)
-                    continue;
-                
-                
                 Collector collector = GetRandomFreeCollector();
-                
+
                 if (collector == null)
                     return;
-
-                mineral.BecomeUnavailable();
+                
+                _mineralsData.ReserveCrystal(mineral);
                 collector.Work(mineral.Position);
             }
+
+            // foreach (Mineral mineral in minerals)
+            // {
+            //     if (mineral.IsAvailable == false)
+            //         continue;
+            //     
+            //     
+            //     Collector collector = GetRandomFreeCollector();
+            //     
+            //     if (collector == null)
+            //         return;
+            //
+            //     mineral.BecomeUnavailable();
+            //     collector.Work(mineral.Position);
+            // }
         }
 
         private List<Collector> FindFreeCollectors()
@@ -121,11 +147,10 @@ namespace CodeBase.CollectorsBases
 
             while (enabled)
             {
-                if(_scanner.TryFindMinerals(out List<Mineral> minerals))
+                if (_scanner.TryFindMinerals(out List<Mineral> minerals))
                 {
                     SetWorkToCollector(minerals);
                 }
-                
 
                 yield return waitTime;
             }
