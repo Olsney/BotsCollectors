@@ -12,24 +12,20 @@ namespace CodeBase.CollectorsBases
     [RequireComponent(typeof(CollectorSpawner))]
     public class CollectorsBase : MonoBehaviour
     {
-        [SerializeField] private UnitSpawnPointContainer _container;
-        [SerializeField] private float _scanRadius;
         [SerializeField] private BaseAreaTrigger _baseAreaTrigger;
-        [SerializeField] private Transform _dropPlace;
         [SerializeField] private MineralsScanner _scanner;
         [SerializeField] private CollectorSpawner _collectorSpawner;
 
         private List<Collector> _collectors;
+        private List<Mineral> _minerals;
+        
+        public event Action<int> ResourceCollected;
 
         public void Construct()
         {
             _collectors = new List<Collector>();
             _minerals = new List<Mineral>();
         }
-
-        private List<Mineral> _minerals;
-
-        public event Action<int> ResourceCollected;
 
         private void Start()
         {
@@ -49,6 +45,24 @@ namespace CodeBase.CollectorsBases
             _baseAreaTrigger.CollectorEntered -= OnCollectorEntered;
             _baseAreaTrigger.CollectorExited -= OnCollectorExited;
             _baseAreaTrigger.ResourceEntered -= OnResourceEntered;
+        }
+
+        private void OnCollectorEntered(Collector collector)
+        {
+            _collectors.Add(collector);
+            collector.FinishWork();
+        }
+
+        private void OnCollectorExited(Collector collector) =>
+            _collectors.Remove(collector);
+
+        private void OnResourceEntered(Mineral mineral)
+        {
+            _minerals.Add(mineral);
+            mineral.transform.parent = transform;
+            mineral.gameObject.SetActive(false);
+
+            ResourceCollected?.Invoke(_minerals.Count);
         }
 
         private void SetWorkToCollector(List<Mineral> minerals)
@@ -115,24 +129,6 @@ namespace CodeBase.CollectorsBases
 
                 yield return waitTime;
             }
-        }
-
-        private void OnCollectorEntered(Collector collector)
-        {
-            _collectors.Add(collector);
-            collector.FinishWork();
-        }
-
-        private void OnCollectorExited(Collector collector) =>
-            _collectors.Remove(collector);
-
-        private void OnResourceEntered(Mineral mineral)
-        {
-            _minerals.Add(mineral);
-            mineral.transform.parent = transform;
-            mineral.gameObject.SetActive(false);
-
-            ResourceCollected?.Invoke(_minerals.Count);
         }
     }
 }
