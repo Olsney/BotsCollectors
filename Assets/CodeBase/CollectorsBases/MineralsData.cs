@@ -17,15 +17,5 @@ namespace CodeBase.CollectorsBases
 
         public void RemoveReservation(Mineral crystal) => 
             _minerals.Remove(crystal);
-
-        public void DebugFreeMineralsCount()
-        {
-            Debug.Log($"{_minerals.Count} - free minerals count in MineralsData");
-
-            foreach (Mineral mineral in _minerals)
-            {
-                Debug.Log($"mineral position - {mineral.transform.position}");
-            }
-        }
     }
 }

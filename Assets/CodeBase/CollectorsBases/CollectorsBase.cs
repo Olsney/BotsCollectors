@@ -66,7 +66,6 @@ namespace CodeBase.CollectorsBases
             mineral.transform.parent = transform;
             mineral.gameObject.SetActive(false);
             _mineralsData.RemoveReservation(mineral);
-            _mineralsData.DebugFreeMineralsCount();
 
             ResourceCollected?.Invoke(_minerals.Count);
         }
@@ -78,9 +77,7 @@ namespace CodeBase.CollectorsBases
 
             IEnumerable<Mineral> minerals2 = _mineralsData.GetFreeMinerals(minerals).OrderBy(mineral =>
                 DataExtension.SqrDistance(transform.position, mineral.transform.position));
-
-            _mineralsData.DebugFreeMineralsCount();
-
+            
             if (minerals2.Any() == false)
                 return;
 
@@ -95,21 +92,6 @@ namespace CodeBase.CollectorsBases
                 _mineralsData.ReserveCrystal(mineral);
                 collector.Work(mineral.Position);
             }
-
-            // foreach (Mineral mineral in minerals)
-            // {
-            //     if (mineral.IsAvailable == false)
-            //         continue;
-            //     
-            //     
-            //     Collector collector = GetRandomFreeCollector();
-            //     
-            //     if (collector == null)
-            //         return;
-            //
-            //     mineral.BecomeUnavailable();
-            //     collector.Work(mineral.Position);
-            // }
         }
 
         private List<Collector> FindFreeCollectors()
@@ -142,9 +124,6 @@ namespace CodeBase.CollectorsBases
 
         private IEnumerator FindMineralsJob()
         {
-            float delay = 10f;
-            WaitForSeconds waitTime = new WaitForSeconds(delay);
-
             while (enabled)
             {
                 if (_scanner.TryFindMinerals(out List<Mineral> minerals))
@@ -152,7 +131,7 @@ namespace CodeBase.CollectorsBases
                     SetWorkToCollector(minerals);
                 }
 
-                yield return waitTime;
+                yield return null;
             }
         }
     }
