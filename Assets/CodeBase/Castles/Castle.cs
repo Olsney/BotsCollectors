@@ -29,8 +29,10 @@ namespace CodeBase.Castles
         private List<Collector> _collectors;
         private List<Mineral> _minerals;
         private MineralsData _mineralsData;
+        private FlagPlacer _flagPlacer;
         private int _boughtCollectorsCount;
 
+        public FlagPlacer FlagPlacer => _flagPlacer;
         public event Action<int> ResourceCollected;
 
         public void Construct()
@@ -38,6 +40,23 @@ namespace CodeBase.Castles
             _collectors = new List<Collector>();
             _minerals = new List<Mineral>();
             _mineralsData = new MineralsData();
+        }
+
+        public void BecomeFlagPlacer(FlagPlacer flagPlacer)
+        {
+            _flagPlacer = flagPlacer;
+            _flagPlacer.Placed += OnFlagPlaced;
+        }
+
+        public void LostFlagPlacer()
+        {
+            _flagPlacer.Placed -= OnFlagPlaced;
+            _flagPlacer = null;
+        }
+
+        private void OnFlagPlaced()
+        {
+            
         }
 
         private void Start()
