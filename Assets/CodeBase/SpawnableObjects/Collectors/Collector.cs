@@ -18,8 +18,7 @@ namespace CodeBase.SpawnableObjects.Collectors
         [SerializeField] private Vector3 _dropPlace;
         [SerializeField] private LayerMask _layerMask;
         [SerializeField] private CastleFactory _castleFactory;
-
-
+        
         private CollectorMover _collectorMover;
 
         public bool IsWorking { get; private set; }

@@ -5,9 +5,9 @@ using UnityEngine.Serialization;
 
 namespace CodeBase.UI
 {
-    public class BaseResourceView : MonoBehaviour
+    public class CastleResourceView : MonoBehaviour
     {
-        [FormerlySerializedAs("_collectorsBase")] [SerializeField] private Castle castle;
+        [FormerlySerializedAs("castle")] [FormerlySerializedAs("_collectorsBase")] [SerializeField] private Castle _castle;
         [SerializeField] private TMP_Text _textMesh;
         private Camera _mainCamera;
 
@@ -15,7 +15,7 @@ namespace CodeBase.UI
             _mainCamera = Camera.main;
 
         private void OnEnable() => 
-            castle.ResourceCollected += OnResourcesCollected;
+            _castle.ResourceCollected += OnResourcesCollected;
 
         private void LateUpdate() => 
             ConfigureLooking();

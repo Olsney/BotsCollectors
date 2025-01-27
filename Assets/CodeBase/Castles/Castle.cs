@@ -9,6 +9,7 @@ using CodeBase.Services;
 using CodeBase.SpawnableObjects.Collectors;
 using CodeBase.SpawnableObjects.Minerals;
 using UnityEngine;
+using UnityEngine.Rendering;
 using Random = UnityEngine.Random;
 
 namespace CodeBase.Castles
@@ -18,6 +19,8 @@ namespace CodeBase.Castles
     {
         private const int CollectorPrice = 3;
         private const int MaxCollectorsToBuy = 5;
+        private const int NewCastlePrice = 5;
+        private const int MinCollectorsAmount = 1;
 
         [SerializeField] private CastleAreaTrigger _castleAreaTrigger;
         [SerializeField] private MineralsScanner _scanner;
@@ -29,6 +32,8 @@ namespace CodeBase.Castles
         private MineralsData _mineralsData;
         private FlagPlacer _flagPlacer;
         private int _boughtCollectorsCount;
+
+        private bool _isFarmingForNewCastle;
 
         public FlagPlacer FlagPlacer => _flagPlacer;
         public Vector3 DropPlacePoint => _collectorSpawner.DropPlace;
@@ -55,13 +60,24 @@ namespace CodeBase.Castles
 
         private void OnFlagPlaced(Flag flag)
         {
+            _isFarmingForNewCastle = true;
+            
             Collector collector = GetRandomFreeCollector();
 
-            if (collector != null)
+            if (!CanBuild(collector))
                 return;
+
+            if (_minerals.Count >= NewCastlePrice)
+            {
+                Pay(NewCastlePrice);
+                collector.BuildCastle(flag);
+            }
             
-            collector.BuildCastle(flag);
+            _isFarmingForNewCastle = false;
         }
+
+        private bool CanBuild(Collector collector) => 
+            collector != null && _collectors.Count > MinCollectorsAmount;
 
         private void Start()
         {
@@ -179,8 +195,17 @@ namespace CodeBase.Castles
         private void InstantiateCollectors() =>
             _collectorSpawner.SpawnCollectors();
 
-        private void Pay(int price) =>
+        private void Pay(int price)
+        {
+            if (price <= 0 || _minerals.Count < price)
+            {
+                Debug.LogError($"Wrong price - {price} is cannot be payed.");
+
+                return;
+            }
+            
             _minerals.RemoveRange(0, price);
+        }
 
         private void SpawnCollector() =>
             _collectorSpawner.Spawn();

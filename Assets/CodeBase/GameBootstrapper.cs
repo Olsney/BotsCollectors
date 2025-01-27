@@ -8,7 +8,7 @@ namespace CodeBase
 {
     public class GameBootstrapper : MonoBehaviour
     {
-        [FormerlySerializedAs("_collectorsBase")] [SerializeField] private Castle castle;
+        [FormerlySerializedAs("castle")] [FormerlySerializedAs("_collectorsBase")] [SerializeField] private Castle _castle;
         [SerializeField] private MineralContainer _mineralContainer; 
         [SerializeField] private MineralSpawner _mineralSpawner;
 
@@ -21,7 +21,7 @@ namespace CodeBase
         {
             _mineralContainer.Construct();
             _mineralSpawner.Construct(_mineralContainer);
-            castle.Construct();
+            _castle.Construct();
         }
     }
 }
