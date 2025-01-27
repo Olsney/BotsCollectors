@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Xml.Serialization;
 using CodeBase.Castles;
 using CodeBase.Extensions;
 using CodeBase.Flags;
@@ -47,30 +46,9 @@ namespace CodeBase.SpawnableObjects.Collectors
             StartCoroutine(InteractWithMineral(destionation));
         }
 
-        public IEnumerator BuildCastle(Flag flag)
+        public void BuildCastle(Flag flag)
         {
-            float delay = 0.1f;
-            WaitForSeconds wait = new(delay);
-
-            Vector3 flagPosition = flag.transform.position;
-
-            while (CanBuild(flagPosition) == false)
-            {
-                _collectorMover.SetTargetPoint(flagPosition);
-
-                if (CanBuild(flagPosition))
-                {
-                    Castle castle = _castleFactory.Create(flagPosition);
-                    Initialize(castle.transform.position, castle.DropPlacePoint);
-                }
-
-                yield return wait;
-            }
-
-            IsWorking = false;
-
-            flag.Destroy();
-            Destroy(this);
+            StartCoroutine(BuildCastleJob(flag));
         }
 
         private IEnumerator InteractWithMineral(Vector3 destionation)
@@ -121,6 +99,31 @@ namespace CodeBase.SpawnableObjects.Collectors
 
         private void TakeMineral(Mineral mineral) =>
             mineral.Bind(Transform);
+
+        private IEnumerator BuildCastleJob(Flag flag)
+        {
+            float delay = 0.1f;
+            WaitForSeconds wait = new(delay);
+
+            Vector3 flagPosition = flag.transform.position;
+
+            while (CanBuild(flagPosition) == false)
+            {
+                _collectorMover.SetTargetPoint(flagPosition);
+
+                if (CanBuild(flagPosition))
+                {
+                    Castle castle = _castleFactory.Create(flagPosition);
+                    Initialize(castle.transform.position, castle.DropPlacePoint);
+                }
+
+                yield return wait;
+            }
+
+            IsWorking = false;
+
+            flag.Destroy();
+        }
 
         private bool CanBuild(Vector3 position) =>
             DataExtension.SqrDistance(transform.position, position) < 3f;
