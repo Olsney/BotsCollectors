@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Xml.Serialization;
 using CodeBase.Extensions;
+using CodeBase.Flags;
 using CodeBase.Services;
 using CodeBase.SpawnableObjects.Minerals;
 using UnityEngine;
@@ -46,23 +47,26 @@ namespace CodeBase.SpawnableObjects.Collectors
             StartCoroutine(InteractWithMineral(destionation));
         }
 
-        public IEnumerator BuildCastle(Vector3 position)
+        public IEnumerator BuildCastle(Flag flag)
         {
             float delay = 0.1f;
             WaitForSeconds wait = new(delay);
-            
-            while (CanBuild(position) == false)
-            {
-                _collectorMover.SetTargetPoint(position);
 
-                if (CanBuild(position))
-                    _castleFactory.Create(position);
+            Vector3 flagPosition = flag.transform.position;
+            
+            while (CanBuild(flagPosition) == false)
+            {
+                _collectorMover.SetTargetPoint(flagPosition);
+
+                if (CanBuild(flagPosition))
+                    _castleFactory.Create(flagPosition);
 
                 yield return wait;
             }
 
             IsWorking = false;
-
+            
+            flag.Destroy();
             Destroy(this);
         }
 

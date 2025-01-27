@@ -57,8 +57,10 @@ namespace CodeBase.Castles
         {
             Collector collector = GetRandomFreeCollector();
 
-            if (collector != null) 
-                collector.BuildCastle(flag.transform.position);
+            if (collector != null)
+                return;
+            
+            collector.BuildCastle(flag);
         }
 
         private void Start()

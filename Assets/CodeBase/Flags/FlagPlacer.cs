@@ -11,14 +11,13 @@ namespace CodeBase.Flags
         private Flag _currentFlag;
         private Castle _castle;
 
-        public bool IsPlaced { get; private set; }
         public event Action<Flag> Placed;
 
         public void Place(Vector3 position)
         {
             TryDestroyPrevious();
 
-            Flag _currentFlag = Instantiate(_flagPrefab, position, Quaternion.identity);
+            _currentFlag = Instantiate(_flagPrefab, position, Quaternion.identity);
 
             Placed?.Invoke(_currentFlag);
         }

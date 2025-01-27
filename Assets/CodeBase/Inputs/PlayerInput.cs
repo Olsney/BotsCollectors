@@ -41,9 +41,9 @@ namespace CodeBase.Inputs
         {
             if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity))
             {
-                hit.collider.TryGetComponent<Castle>(out Castle castle);
+                TrySelectCastle(hit, out Castle castle);
 
-                if (CastleHasFlagPlacer(castle) && castle != null)
+                if (CastleHasFlagPlacer(castle) && CastleSelected(castle))
                     LoseFlagPlacerInCastle(castle);
 
                 if (HitFlagPlacer(hit))
@@ -56,13 +56,19 @@ namespace CodeBase.Inputs
 
                 if (HitPointToBuild(hit))
                 {
-                    PlaceFlag(hit);
-
-                    if (castle != null)
+                    if (CastleSelected(castle))
                         castle.LostFlagPlacer();
+                    
+                    PlaceFlag(hit);
                 }
             }
         }
+
+        private static bool CastleSelected(Castle castle) => 
+            castle != null;
+
+        private static bool TrySelectCastle(RaycastHit hit, out Castle castle) => 
+            hit.collider.TryGetComponent(out castle);
 
         private static bool CastleHasFlagPlacer(Castle castle) =>
             castle.FlagPlacer != null;
