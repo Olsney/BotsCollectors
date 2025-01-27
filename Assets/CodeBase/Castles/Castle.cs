@@ -7,20 +7,25 @@ using CodeBase.Services;
 using CodeBase.SpawnableObjects.Collectors;
 using CodeBase.SpawnableObjects.Minerals;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
-namespace CodeBase.CollectorsBases
+namespace CodeBase.Castles
 {
     [RequireComponent(typeof(CollectorSpawner))]
-    public class CollectorsBase : MonoBehaviour
+    public class Castle : MonoBehaviour
     {
-        [SerializeField] private BaseAreaTrigger _baseAreaTrigger;
+        private const int CollectorPrice = 3;
+        private const int MaxCollectorsToBuy = 5;
+        
+        [FormerlySerializedAs("_baseAreaTrigger")] [SerializeField] private CastleAreaTrigger castleAreaTrigger;
         [SerializeField] private MineralsScanner _scanner;
         [SerializeField] private CollectorSpawner _collectorSpawner;
 
         private List<Collector> _collectors;
         private List<Mineral> _minerals;
         private MineralsData _mineralsData;
+        private int _boughtCollectorsCount;
 
         public event Action<int> ResourceCollected;
 
@@ -33,22 +38,22 @@ namespace CodeBase.CollectorsBases
 
         private void Start()
         {
-            _collectorSpawner.SpawnCollectors();
+            InstantiateCollectors();
             StartCoroutine(FindMineralsJob());
         }
 
         private void OnEnable()
         {
-            _baseAreaTrigger.CollectorEntered += OnCollectorEntered;
-            _baseAreaTrigger.CollectorExited += OnCollectorExited;
-            _baseAreaTrigger.ResourceEntered += OnResourceEntered;
+            castleAreaTrigger.CollectorEntered += OnCollectorEntered;
+            castleAreaTrigger.CollectorExited += OnCollectorExited;
+            castleAreaTrigger.ResourceEntered += OnResourceEntered;
         }
 
         private void OnDisable()
         {
-            _baseAreaTrigger.CollectorEntered -= OnCollectorEntered;
-            _baseAreaTrigger.CollectorExited -= OnCollectorExited;
-            _baseAreaTrigger.ResourceEntered -= OnResourceEntered;
+            castleAreaTrigger.CollectorEntered -= OnCollectorEntered;
+            castleAreaTrigger.CollectorExited -= OnCollectorExited;
+            castleAreaTrigger.ResourceEntered -= OnResourceEntered;
         }
 
         private void OnCollectorEntered(Collector collector)
@@ -67,6 +72,9 @@ namespace CodeBase.CollectorsBases
             mineral.gameObject.SetActive(false);
             _mineralsData.RemoveReservation(mineral);
 
+            if (CanBuyCollector()) 
+                BuyCollector();
+
             ResourceCollected?.Invoke(_minerals.Count);
         }
 
@@ -75,14 +83,14 @@ namespace CodeBase.CollectorsBases
             if (minerals == null)
                 return;
 
-            IEnumerable<Mineral> minerals2 = _mineralsData.GetFreeMinerals(minerals).OrderBy(mineral =>
+            IEnumerable<Mineral> freeMinerals = _mineralsData.GetFreeMinerals(minerals).OrderBy(mineral =>
                 DataExtension.SqrDistance(transform.position, mineral.transform.position));
             
-            if (minerals2.Any() == false)
+            if (freeMinerals.Any() == false)
                 return;
 
 
-            foreach (var mineral in minerals2)
+            foreach (var mineral in freeMinerals)
             {
                 Collector collector = GetRandomFreeCollector();
 
@@ -113,9 +121,7 @@ namespace CodeBase.CollectorsBases
 
 
             if (freeCollectors.Count == 0)
-            {
                 return default;
-            }
 
             var randomCollector = freeCollectors[Random.Range(0, freeCollectors.Count)];
 
@@ -126,13 +132,33 @@ namespace CodeBase.CollectorsBases
         {
             while (enabled)
             {
-                if (_scanner.TryFindMinerals(out List<Mineral> minerals))
-                {
+                if (_scanner.TryFindMinerals(out List<Mineral> minerals)) 
                     SetWorkToCollector(minerals);
-                }
 
                 yield return null;
             }
         }
+
+        private bool CanBuyCollector() => 
+            _minerals.Count >= 3 && _collectors.Count < MaxCollectorsToBuy;
+
+        private void BuyCollector()
+        {
+            Pay(CollectorPrice);
+            SpawnCollector();
+            IncreaseBoughtCollectorsCount();
+        }
+
+        private void InstantiateCollectors() => 
+            _collectorSpawner.SpawnCollectors();
+
+        private void Pay(int price) => 
+            _minerals.RemoveRange(0, price);
+
+        private void SpawnCollector() => 
+            _collectorSpawner.Spawn();
+
+        private void IncreaseBoughtCollectorsCount() => 
+            _boughtCollectorsCount++;
     }
 }

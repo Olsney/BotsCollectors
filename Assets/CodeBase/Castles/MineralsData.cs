@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using CodeBase.SpawnableObjects.Minerals;
-using UnityEngine;
 
-namespace CodeBase.CollectorsBases
+namespace CodeBase.Castles
 {
     public class MineralsData
     {

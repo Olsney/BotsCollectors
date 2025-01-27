@@ -3,9 +3,9 @@ using CodeBase.SpawnableObjects.Collectors;
 using CodeBase.SpawnableObjects.Minerals;
 using UnityEngine;
 
-namespace CodeBase.CollectorsBases
+namespace CodeBase.Castles
 {
-    public class BaseAreaTrigger : MonoBehaviour
+    public class CastleAreaTrigger : MonoBehaviour
     {
         public event Action<Collector> CollectorEntered;
         public event Action<Collector> CollectorExited;

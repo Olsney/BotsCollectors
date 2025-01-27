@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace CodeBase.CollectorsBases
+namespace CodeBase.Castles
 {
-    public class BaseDropPlace : MonoBehaviour, IBaseDropPlace
+    public class CastleDropPlace : MonoBehaviour, ICastleDropPlace
     {
         public Vector3 DropPlacePoint => transform.position;
     }

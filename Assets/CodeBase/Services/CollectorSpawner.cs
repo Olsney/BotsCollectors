@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using CodeBase.CollectorsBases;
+using CodeBase.Castles;
 using CodeBase.Extensions;
 using CodeBase.SpawnableObjects.Collectors;
 using UnityEngine;
@@ -17,12 +17,14 @@ namespace CodeBase.Services
             StartCoroutine(CollectorsSpawningJob());
         }
 
-        private void Spawn(Vector3 position, Vector3 dropPlace)
+        public void Spawn()
         {
+            Vector3 spawnPoint = DataExtension.GetRandomPosition(_container.SpawnPoints);
+            
             Collector collector = Instantiate(_prefab);
-            collector.Init(position, dropPlace);
+            collector.Initialize(spawnPoint, _dropPlace.position);
         }
-        
+
         private IEnumerator CollectorsSpawningJob()
         {
             int collectorsAmount = 3;
@@ -33,7 +35,7 @@ namespace CodeBase.Services
 
             while (spawnedAmount < collectorsAmount)
             {
-                Spawn(DataExtension.GetRandomPosition(_container.SpawnPoints), _dropPlace.position);
+                Spawn();
                 spawnedAmount++;
 
                 yield return waitTime;

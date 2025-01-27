@@ -2,7 +2,7 @@
 using CodeBase.SpawnableObjects.Minerals;
 using UnityEngine;
 
-namespace CodeBase.CollectorsBases
+namespace CodeBase.Castles
 {
     public class MineralsScanner : MonoBehaviour
     {

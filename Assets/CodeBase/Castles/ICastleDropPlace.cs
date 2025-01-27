@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace CodeBase.CollectorsBases
+namespace CodeBase.Castles
 {
-    public interface IBaseDropPlace
+    public interface ICastleDropPlace
     {
         public Vector3 DropPlacePoint { get; }
     }

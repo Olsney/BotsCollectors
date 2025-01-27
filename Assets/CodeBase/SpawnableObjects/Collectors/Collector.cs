@@ -24,6 +24,12 @@ namespace CodeBase.SpawnableObjects.Collectors
             _collectorMover.StopMove();
         }
 
+        public void Initialize(Vector3 position, Vector3 dropPlace)
+        {
+            transform.position = position;
+            _dropPlace = new Vector3(dropPlace.x, dropPlace.y, dropPlace.z);
+        }
+
         public void Work(Vector3 destionation)
         {
             IsWorking = true;
@@ -31,12 +37,6 @@ namespace CodeBase.SpawnableObjects.Collectors
             _collectorMover.SetTargetPoint(destionation);
 
             StartCoroutine(InteractWithMineral(destionation));
-        }
-
-        public void Init(Vector3 position, Vector3 dropPlace)
-        {
-            transform.position = position;
-            _dropPlace = new Vector3(dropPlace.x, dropPlace.y, dropPlace.z);
         }
 
         private IEnumerator InteractWithMineral(Vector3 destionation)
