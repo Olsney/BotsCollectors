@@ -23,7 +23,6 @@ namespace CodeBase.SpawnableObjects.Collectors
         private CollectorMover _collectorMover;
 
         public bool IsWorking { get; private set; }
-        public Transform Transform => transform;
 
         private void Awake()
         {
@@ -98,7 +97,7 @@ namespace CodeBase.SpawnableObjects.Collectors
         }
 
         private void TakeMineral(Mineral mineral) =>
-            mineral.Bind(Transform);
+            mineral.Bind(transform);
 
         private IEnumerator BuildCastleJob(Flag flag)
         {
