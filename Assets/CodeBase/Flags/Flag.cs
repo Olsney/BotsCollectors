@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 
-namespace CodeBase.Flag
+namespace CodeBase.Flags
 {
     public class Flag : MonoBehaviour
     {
-        
     }
 }

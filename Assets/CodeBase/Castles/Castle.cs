@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using CodeBase.Extensions;
+using CodeBase.Flags;
+using CodeBase.Inputs;
 using CodeBase.Services;
 using CodeBase.SpawnableObjects.Collectors;
 using CodeBase.SpawnableObjects.Minerals;
@@ -18,10 +20,12 @@ namespace CodeBase.Castles
         private const int CollectorPrice = 3;
         private const int MaxCollectorsToBuy = 5;
         
-        [FormerlySerializedAs("_baseAreaTrigger")] [SerializeField] private CastleAreaTrigger castleAreaTrigger;
+        [SerializeField] private CastleAreaTrigger _castleAreaTrigger;
         [SerializeField] private MineralsScanner _scanner;
         [SerializeField] private CollectorSpawner _collectorSpawner;
-
+        [SerializeField] private CastleFactory _castleFactory;
+        [SerializeField] private PlayerInput _playerInput;
+        
         private List<Collector> _collectors;
         private List<Mineral> _minerals;
         private MineralsData _mineralsData;
@@ -44,16 +48,16 @@ namespace CodeBase.Castles
 
         private void OnEnable()
         {
-            castleAreaTrigger.CollectorEntered += OnCollectorEntered;
-            castleAreaTrigger.CollectorExited += OnCollectorExited;
-            castleAreaTrigger.ResourceEntered += OnResourceEntered;
+            _castleAreaTrigger.CollectorEntered += OnCollectorEntered;
+            _castleAreaTrigger.CollectorExited += OnCollectorExited;
+            _castleAreaTrigger.ResourceEntered += OnResourceEntered;
         }
 
         private void OnDisable()
         {
-            castleAreaTrigger.CollectorEntered -= OnCollectorEntered;
-            castleAreaTrigger.CollectorExited -= OnCollectorExited;
-            castleAreaTrigger.ResourceEntered -= OnResourceEntered;
+            _castleAreaTrigger.CollectorEntered -= OnCollectorEntered;
+            _castleAreaTrigger.CollectorExited -= OnCollectorExited;
+            _castleAreaTrigger.ResourceEntered -= OnResourceEntered;
         }
 
         private void OnCollectorEntered(Collector collector)
@@ -140,7 +144,7 @@ namespace CodeBase.Castles
         }
 
         private bool CanBuyCollector() => 
-            _minerals.Count >= 3 && _collectors.Count < MaxCollectorsToBuy;
+            _minerals.Count >= 3 && _boughtCollectorsCount < MaxCollectorsToBuy;
 
         private void BuyCollector()
         {
