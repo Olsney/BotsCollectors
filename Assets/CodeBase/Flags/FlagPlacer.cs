@@ -1,6 +1,5 @@
 ﻿using System;
 using CodeBase.Castles;
-using UnityEditor.Searcher;
 using UnityEngine;
 
 namespace CodeBase.Flags
@@ -13,7 +12,7 @@ namespace CodeBase.Flags
         private Castle _castle;
 
         public bool IsPlaced { get; private set; }
-        public event Action Placed;
+        public event Action<Flag> Placed;
 
         public void Place(Vector3 position)
         {
@@ -21,15 +20,13 @@ namespace CodeBase.Flags
 
             Flag _currentFlag = Instantiate(_flagPrefab, position, Quaternion.identity);
 
-            IsPlaced = true;
+            Placed?.Invoke(_currentFlag);
         }
         
         private void TryDestroyPrevious()
         {
             if (_currentFlag != null)
                 Destroy(_currentFlag.gameObject);
-
-            IsPlaced = false;
         }
     }
 }

@@ -1,17 +1,24 @@
 ﻿using System.Collections;
+using System.Xml.Serialization;
 using CodeBase.Extensions;
+using CodeBase.Services;
 using CodeBase.SpawnableObjects.Minerals;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace CodeBase.SpawnableObjects.Collectors
 {
     [RequireComponent(typeof(CollectorMover))]
     public class Collector : MonoBehaviour
     {
-        [SerializeField] private float _permissibleDifference;
+        [FormerlySerializedAs("_permissibleDifference")] [SerializeField]
+        private float _permissibleResourceDistanceDifference;
+
         [SerializeField] private float _takeRadius;
         [SerializeField] private Vector3 _dropPlace;
         [SerializeField] private LayerMask _layerMask;
+        [SerializeField] private CastleFactory _castleFactory;
+
 
         private CollectorMover _collectorMover;
 
@@ -39,14 +46,35 @@ namespace CodeBase.SpawnableObjects.Collectors
             StartCoroutine(InteractWithMineral(destionation));
         }
 
-        private IEnumerator InteractWithMineral(Vector3 destionation)
+        public IEnumerator BuildCastle(Vector3 position)
         {
             float delay = 0.1f;
             WaitForSeconds wait = new(delay);
             
+            while (CanBuild(position) == false)
+            {
+                _collectorMover.SetTargetPoint(position);
+
+                if (CanBuild(position))
+                    _castleFactory.Create(position);
+
+                yield return wait;
+            }
+
+            IsWorking = false;
+
+            Destroy(this);
+        }
+
+        private IEnumerator InteractWithMineral(Vector3 destionation)
+        {
+            float delay = 0.1f;
+            WaitForSeconds wait = new(delay);
+
             while (enabled)
             {
-                if (DataExtension.SqrDistance(transform.position, destionation) <= _permissibleDifference)
+                if (DataExtension.SqrDistance(transform.position, destionation) <=
+                    _permissibleResourceDistanceDifference)
                 {
                     if (TryFindMineral(out Mineral mineral))
                     {
@@ -67,10 +95,8 @@ namespace CodeBase.SpawnableObjects.Collectors
             IsWorking = false;
         }
 
-        private void GoBase()
-        {
+        private void GoBase() =>
             _collectorMover.SetTargetPoint(_dropPlace);
-        }
 
         private bool TryFindMineral(out Mineral mineral)
         {
@@ -88,5 +114,8 @@ namespace CodeBase.SpawnableObjects.Collectors
 
         private void TakeMineral(Mineral mineral) =>
             mineral.Bind(Transform);
+
+        private bool CanBuild(Vector3 position) =>
+            DataExtension.SqrDistance(transform.position, position) < 3f;
     }
 }

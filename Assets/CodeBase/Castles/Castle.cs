@@ -19,13 +19,12 @@ namespace CodeBase.Castles
     {
         private const int CollectorPrice = 3;
         private const int MaxCollectorsToBuy = 5;
-        
+
         [SerializeField] private CastleAreaTrigger _castleAreaTrigger;
         [SerializeField] private MineralsScanner _scanner;
         [SerializeField] private CollectorSpawner _collectorSpawner;
-        [SerializeField] private CastleFactory _castleFactory;
         [SerializeField] private PlayerInput _playerInput;
-        
+
         private List<Collector> _collectors;
         private List<Mineral> _minerals;
         private MineralsData _mineralsData;
@@ -54,9 +53,12 @@ namespace CodeBase.Castles
             _flagPlacer = null;
         }
 
-        private void OnFlagPlaced()
+        private void OnFlagPlaced(Flag flag)
         {
-            
+            Collector collector = GetRandomFreeCollector();
+
+            if (collector != null) 
+                collector.BuildCastle(flag.transform.position);
         }
 
         private void Start()
@@ -95,7 +97,7 @@ namespace CodeBase.Castles
             mineral.gameObject.SetActive(false);
             _mineralsData.RemoveReservation(mineral);
 
-            if (CanBuyCollector()) 
+            if (CanBuyCollector())
                 BuyCollector();
 
             ResourceCollected?.Invoke(_minerals.Count);
@@ -108,7 +110,7 @@ namespace CodeBase.Castles
 
             IEnumerable<Mineral> freeMinerals = _mineralsData.GetFreeMinerals(minerals).OrderBy(mineral =>
                 DataExtension.SqrDistance(transform.position, mineral.transform.position));
-            
+
             if (freeMinerals.Any() == false)
                 return;
 
@@ -119,7 +121,7 @@ namespace CodeBase.Castles
 
                 if (collector == null)
                     return;
-                
+
                 _mineralsData.ReserveCrystal(mineral);
                 collector.Work(mineral.Position);
             }
@@ -155,14 +157,14 @@ namespace CodeBase.Castles
         {
             while (enabled)
             {
-                if (_scanner.TryFindMinerals(out List<Mineral> minerals)) 
+                if (_scanner.TryFindMinerals(out List<Mineral> minerals))
                     SetWorkToCollector(minerals);
 
                 yield return null;
             }
         }
 
-        private bool CanBuyCollector() => 
+        private bool CanBuyCollector() =>
             _minerals.Count >= 3 && _boughtCollectorsCount < MaxCollectorsToBuy;
 
         private void BuyCollector()
@@ -172,16 +174,16 @@ namespace CodeBase.Castles
             IncreaseBoughtCollectorsCount();
         }
 
-        private void InstantiateCollectors() => 
+        private void InstantiateCollectors() =>
             _collectorSpawner.SpawnCollectors();
 
-        private void Pay(int price) => 
+        private void Pay(int price) =>
             _minerals.RemoveRange(0, price);
 
-        private void SpawnCollector() => 
+        private void SpawnCollector() =>
             _collectorSpawner.Spawn();
 
-        private void IncreaseBoughtCollectorsCount() => 
+        private void IncreaseBoughtCollectorsCount() =>
             _boughtCollectorsCount++;
     }
 }
