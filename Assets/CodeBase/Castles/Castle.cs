@@ -9,7 +9,6 @@ using CodeBase.Services;
 using CodeBase.SpawnableObjects.Collectors;
 using CodeBase.SpawnableObjects.Minerals;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace CodeBase.Castles
@@ -32,6 +31,7 @@ namespace CodeBase.Castles
         private int _boughtCollectorsCount;
 
         public FlagPlacer FlagPlacer => _flagPlacer;
+        public Vector3 DropPlacePoint => _collectorSpawner.DropPlace;
         public event Action<int> ResourceCollected;
 
         public void Construct()

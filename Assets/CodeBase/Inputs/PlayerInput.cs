@@ -43,7 +43,7 @@ namespace CodeBase.Inputs
             {
                 TrySelectCastle(hit, out Castle castle);
 
-                if (CastleHasFlagPlacer(castle) && CastleSelected(castle))
+                if (IsCastleHasFlagPlacer(castle) && IsCastleSelected(castle))
                     LoseFlagPlacerInCastle(castle);
 
                 if (HitFlagPlacer(hit))
@@ -56,7 +56,7 @@ namespace CodeBase.Inputs
 
                 if (HitPointToBuild(hit))
                 {
-                    if (CastleSelected(castle))
+                    if (IsCastleSelected(castle))
                         castle.LostFlagPlacer();
                     
                     PlaceFlag(hit);
@@ -64,13 +64,13 @@ namespace CodeBase.Inputs
             }
         }
 
-        private static bool CastleSelected(Castle castle) => 
+        private static bool IsCastleSelected(Castle castle) => 
             castle != null;
 
         private static bool TrySelectCastle(RaycastHit hit, out Castle castle) => 
             hit.collider.TryGetComponent(out castle);
 
-        private static bool CastleHasFlagPlacer(Castle castle) =>
+        private static bool IsCastleHasFlagPlacer(Castle castle) =>
             castle.FlagPlacer != null;
 
         private static void LoseFlagPlacerInCastle(Castle castle) =>

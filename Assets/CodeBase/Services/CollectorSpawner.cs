@@ -11,7 +11,9 @@ namespace CodeBase.Services
         [SerializeField] private Collector _prefab;
         [SerializeField] private UnitSpawnPointContainer _container;
         [SerializeField] private Transform _dropPlace;
-
+        
+        public Vector3 DropPlace => _dropPlace.position;
+        
         public void SpawnCollectors()
         {
             StartCoroutine(CollectorsSpawningJob());

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Xml.Serialization;
+using CodeBase.Castles;
 using CodeBase.Extensions;
 using CodeBase.Flags;
 using CodeBase.Services;
@@ -12,8 +13,7 @@ namespace CodeBase.SpawnableObjects.Collectors
     [RequireComponent(typeof(CollectorMover))]
     public class Collector : MonoBehaviour
     {
-        [FormerlySerializedAs("_permissibleDifference")] [SerializeField]
-        private float _permissibleResourceDistanceDifference;
+        [FormerlySerializedAs("_permissibleDifference")] [SerializeField] private float _permissibleResourceDistanceDifference;
 
         [SerializeField] private float _takeRadius;
         [SerializeField] private Vector3 _dropPlace;
@@ -53,19 +53,22 @@ namespace CodeBase.SpawnableObjects.Collectors
             WaitForSeconds wait = new(delay);
 
             Vector3 flagPosition = flag.transform.position;
-            
+
             while (CanBuild(flagPosition) == false)
             {
                 _collectorMover.SetTargetPoint(flagPosition);
 
                 if (CanBuild(flagPosition))
-                    _castleFactory.Create(flagPosition);
+                {
+                    Castle castle = _castleFactory.Create(flagPosition);
+                    Initialize(castle.transform.position, castle.DropPlacePoint);
+                }
 
                 yield return wait;
             }
 
             IsWorking = false;
-            
+
             flag.Destroy();
             Destroy(this);
         }

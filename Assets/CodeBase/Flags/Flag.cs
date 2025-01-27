@@ -4,9 +4,7 @@ namespace CodeBase.Flags
 {
     public class Flag : MonoBehaviour
     {
-        public void Destroy()
-        {
+        public void Destroy() => 
             Destroy(gameObject);
-        }
     }
 }
