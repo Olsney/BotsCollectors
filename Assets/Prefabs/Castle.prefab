@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5241172124065977647}
   - component: {fileID: 4007050139143976593}
   m_Layer: 7
-  m_Name: BaseAreaTrigger
+  m_Name: CastleAreaTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -52,8 +52,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 0.58586514, z: 1}
+  m_Center: {x: 0, y: -0.20706744, z: 0}
 --- !u!114 &4007050139143976593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -139,8 +139,7 @@ GameObject:
   - component: {fileID: 9152743884007328212}
   - component: {fileID: 4068175402348221709}
   - component: {fileID: 4287603995931636691}
-  - component: {fileID: 798893659498257182}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -215,27 +214,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &798893659498257182
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 743244746690068004}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2754041455011134126
 GameObject:
   m_ObjectHideFlags: 0
@@ -247,8 +225,7 @@ GameObject:
   - component: {fileID: 2548037864846126187}
   - component: {fileID: 4947752613989484280}
   - component: {fileID: 131070382656980276}
-  - component: {fileID: 426876166319942303}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -323,27 +300,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &426876166319942303
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2754041455011134126}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2783413974977100745
 GameObject:
   m_ObjectHideFlags: 0
@@ -448,8 +404,7 @@ GameObject:
   - component: {fileID: 5799692140895140904}
   - component: {fileID: 8602191896100837263}
   - component: {fileID: 3834344796441129588}
-  - component: {fileID: 998828764460292771}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -524,27 +479,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &998828764460292771
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3116092627299980754}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4291983363392857244
 GameObject:
   m_ObjectHideFlags: 0
@@ -587,8 +521,7 @@ GameObject:
   - component: {fileID: 8049360791918035702}
   - component: {fileID: 560548209327378892}
   - component: {fileID: 2852289148453951272}
-  - component: {fileID: 7965338002493833818}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: Cube (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -663,27 +596,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &7965338002493833818
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4481869798394902066}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5427170709580875978
 GameObject:
   m_ObjectHideFlags: 0
@@ -752,8 +664,7 @@ GameObject:
   - component: {fileID: 6305697876550032151}
   - component: {fileID: 6511096443668113921}
   - component: {fileID: 1933358177113301226}
-  - component: {fileID: 8103365130134431242}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: Cube (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -828,27 +739,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &8103365130134431242
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5547256985401768511}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5585080210486158044
 GameObject:
   m_ObjectHideFlags: 0
@@ -1113,7 +1003,7 @@ GameObject:
   - component: {fileID: 1419135657385671920}
   - component: {fileID: 8170077322597730838}
   - component: {fileID: 5695124322352117760}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: Castle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1216,8 +1106,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.6237271, y: 1.3362983, z: 1.6913916}
+  m_Center: {x: 0.05767557, y: 0.16814917, z: -0.022755563}
 --- !u!114 &1360966120394746568
 MonoBehaviour:
   m_ObjectHideFlags: 0

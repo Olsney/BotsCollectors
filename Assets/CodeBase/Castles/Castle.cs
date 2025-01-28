@@ -27,12 +27,11 @@ namespace CodeBase.Castles
         private List<Collector> _collectors;
         private List<Mineral> _minerals;
         private MineralsData _mineralsData;
-        private FlagPlacer _flagPlacer;
         private int _boughtCollectorsCount;
 
         private bool _isFarmingForNewCastle;
 
-        public FlagPlacer FlagPlacer => _flagPlacer;
+        public FlagPlacer FlagPlacer { get; private set; }
         public Vector3 DropPlacePoint => _collectorSpawner.DropPlace;
         public event Action<int> ResourceCollected;
 
@@ -65,14 +64,14 @@ namespace CodeBase.Castles
 
         public void BecomeFlagPlacer(FlagPlacer flagPlacer)
         {
-            _flagPlacer = flagPlacer;
-            _flagPlacer.Placed += OnFlagPlaced;
+            FlagPlacer = flagPlacer;
+            FlagPlacer.Placed += OnFlagPlaced;
         }
 
-        public void LostFlagPlacer()
+        public void LoseFlagPlacer()
         {
-            _flagPlacer.Placed -= OnFlagPlaced;
-            _flagPlacer = null;
+            FlagPlacer.Placed -= OnFlagPlaced;
+            FlagPlacer = null;
         }
 
         private void OnCollectorEntered(Collector collector)
@@ -103,7 +102,7 @@ namespace CodeBase.Castles
             
             Collector collector = GetRandomFreeCollector();
 
-            if (!CanBuild(collector))
+            if (CanBuild(collector) == false)
                 return;
 
             if (_minerals.Count >= NewCastlePrice)
