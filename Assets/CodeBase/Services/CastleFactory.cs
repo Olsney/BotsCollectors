@@ -7,7 +7,12 @@ namespace CodeBase.Services
     {
         [SerializeField] private Castle _castlePrefab;
 
-        public Castle Create(Vector3 position) => 
-            Instantiate(_castlePrefab, position, Quaternion.identity, null);
+        public Castle Create(Vector3 position)
+        {
+            Castle castle = Instantiate(_castlePrefab, position, Quaternion.identity, null);
+            castle.Construct();
+            
+            return castle;
+        }
     }
 }

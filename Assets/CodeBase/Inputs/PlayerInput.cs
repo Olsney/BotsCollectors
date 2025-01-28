@@ -58,16 +58,16 @@ namespace CodeBase.Inputs
                 {
                     if (IsCastleSelected(castle))
                         castle.LostFlagPlacer();
-                    
+
                     PlaceFlag(hit);
                 }
             }
         }
 
-        private static bool IsCastleSelected(Castle castle) => 
+        private static bool IsCastleSelected(Castle castle) =>
             castle != null;
 
-        private static bool TrySelectCastle(RaycastHit hit, out Castle castle) => 
+        private static bool TrySelectCastle(RaycastHit hit, out Castle castle) =>
             hit.collider.TryGetComponent(out castle);
 
         private static bool IsCastleHasFlagPlacer(Castle castle) =>

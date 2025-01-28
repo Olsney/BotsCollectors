@@ -4,12 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using CodeBase.Extensions;
 using CodeBase.Flags;
-using CodeBase.Inputs;
 using CodeBase.Services;
 using CodeBase.SpawnableObjects.Collectors;
 using CodeBase.SpawnableObjects.Minerals;
 using UnityEngine;
-using UnityEngine.Rendering;
 using Random = UnityEngine.Random;
 
 namespace CodeBase.Castles
@@ -25,7 +23,6 @@ namespace CodeBase.Castles
         [SerializeField] private CastleAreaTrigger _castleAreaTrigger;
         [SerializeField] private MineralsScanner _scanner;
         [SerializeField] private CollectorSpawner _collectorSpawner;
-        [SerializeField] private PlayerInput _playerInput;
 
         private List<Collector> _collectors;
         private List<Mineral> _minerals;
@@ -46,39 +43,6 @@ namespace CodeBase.Castles
             _mineralsData = new MineralsData();
         }
 
-        public void BecomeFlagPlacer(FlagPlacer flagPlacer)
-        {
-            _flagPlacer = flagPlacer;
-            _flagPlacer.Placed += OnFlagPlaced;
-        }
-
-        public void LostFlagPlacer()
-        {
-            _flagPlacer.Placed -= OnFlagPlaced;
-            _flagPlacer = null;
-        }
-
-        private void OnFlagPlaced(Flag flag)
-        {
-            _isFarmingForNewCastle = true;
-            
-            Collector collector = GetRandomFreeCollector();
-
-            if (!CanBuild(collector))
-                return;
-
-            if (_minerals.Count >= NewCastlePrice)
-            {
-                Pay(NewCastlePrice);
-                collector.BuildCastle(flag);
-            }
-            
-            _isFarmingForNewCastle = false;
-        }
-
-        private bool CanBuild(Collector collector) => 
-            collector != null && _collectors.Count > MinCollectorsAmount;
-
         private void Start()
         {
             InstantiateCollectors();
@@ -97,6 +61,18 @@ namespace CodeBase.Castles
             _castleAreaTrigger.CollectorEntered -= OnCollectorEntered;
             _castleAreaTrigger.CollectorExited -= OnCollectorExited;
             _castleAreaTrigger.ResourceEntered -= OnResourceEntered;
+        }
+
+        public void BecomeFlagPlacer(FlagPlacer flagPlacer)
+        {
+            _flagPlacer = flagPlacer;
+            _flagPlacer.Placed += OnFlagPlaced;
+        }
+
+        public void LostFlagPlacer()
+        {
+            _flagPlacer.Placed -= OnFlagPlaced;
+            _flagPlacer = null;
         }
 
         private void OnCollectorEntered(Collector collector)
@@ -120,6 +96,27 @@ namespace CodeBase.Castles
 
             ResourceCollected?.Invoke(_minerals.Count);
         }
+
+        private void OnFlagPlaced(Flag flag)
+        {
+            _isFarmingForNewCastle = true;
+            
+            Collector collector = GetRandomFreeCollector();
+
+            if (!CanBuild(collector))
+                return;
+
+            if (_minerals.Count >= NewCastlePrice)
+            {
+                Pay(NewCastlePrice);
+                collector.BuildCastle(flag);
+            }
+            
+            _isFarmingForNewCastle = false;
+        }
+
+        private bool CanBuild(Collector collector) => 
+            collector != null && _collectors.Count > MinCollectorsAmount;
 
         private void SetWorkToCollector(List<Mineral> minerals)
         {
@@ -175,6 +172,9 @@ namespace CodeBase.Castles
         {
             while (enabled)
             {
+                if (_isFarmingForNewCastle)
+                    yield return null;
+                
                 if (_scanner.TryFindMinerals(out List<Mineral> minerals))
                     SetWorkToCollector(minerals);
 
