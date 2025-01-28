@@ -1,10 +1,6 @@
-﻿using System;
-using CodeBase.Castles;
+﻿using CodeBase.Castles;
 using CodeBase.Flags;
-using Unity.VisualScripting.Dependencies.NCalc;
-using UnityEditor.UIElements;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace CodeBase.Inputs
 {
