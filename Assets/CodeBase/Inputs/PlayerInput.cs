@@ -65,20 +65,11 @@ namespace CodeBase.Inputs
                     if (_currentCastle == null)
                         return;
                     
+                    Debug.Log($"FlagPlacer is null - {_flagPlacer == null}");
+                    
                     PlaceFlag(hit);
                 }
             }
-        }
-
-        private bool TrySelectOther(RaycastHit hit)
-        {
-            int hitLayer = 1 << hit.collider.gameObject.layer;
-
-            Debug.Log("Try select other!");
-            Debug.Log($"{hitLayer} - hit other");
-            Debug.Log($"{_otherLayerMaskNumber} - otherLayerMask value");
-
-            return hitLayer == _otherLayerMaskNumber;
         }
 
         private bool TrySelectCastle(RaycastHit hit, out Castle castle)
@@ -104,18 +95,28 @@ namespace CodeBase.Inputs
             return false;
         }
 
+        private bool TrySelectOther(RaycastHit hit)
+        {
+            int hitLayer = 1 << hit.collider.gameObject.layer;
+
+            return hitLayer == _otherLayerMaskNumber;
+        }
+
         private static void LoseFlagPlacerInCastle(Castle castle) =>
             castle.LoseFlagPlacer();
 
         private void SetFlagPlacerToCastle(Castle castle)
         {
+            Debug.Log("We are int SetFlagPlacerToCastle method");
+
             castle.BecomeFlagPlacer(_flagPlacer);
         }
 
         private void PlaceFlag(RaycastHit hit)
         {
+            Debug.Log("We are int PlaceFlag method");
+            
             _flagPlacer.Place(hit.point);
-            _flagPlacer = null;
         }
     }
 }
