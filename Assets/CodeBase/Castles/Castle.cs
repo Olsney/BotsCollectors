@@ -16,7 +16,7 @@ namespace CodeBase.Castles
     public class Castle : MonoBehaviour
     {
         private const int CollectorPrice = 3;
-        private const int MaxCollectorsToBuy = 5;
+        private const int MaxCollectorsToBuy = 2;
         private const int NewCastlePrice = 5;
         private const int MinCollectorsAmount = 1;
 
