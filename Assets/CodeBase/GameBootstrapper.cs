@@ -11,6 +11,8 @@ namespace CodeBase
         [FormerlySerializedAs("castle")] [FormerlySerializedAs("_collectorsBase")] [SerializeField] private Castle _castle;
         [SerializeField] private MineralContainer _mineralContainer; 
         [SerializeField] private MineralSpawner _mineralSpawner;
+        [SerializeField] private Castle _castlePrefab;
+        [SerializeField] private CastleFactory _castleFactory;
 
         private void Awake()
         {
@@ -22,6 +24,7 @@ namespace CodeBase
             _mineralContainer.Construct();
             _mineralSpawner.Construct(_mineralContainer);
             _castle.Construct();
+            _castleFactory.Construct(_castlePrefab);
         }
     }
 }

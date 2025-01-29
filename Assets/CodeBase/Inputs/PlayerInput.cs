@@ -99,14 +99,10 @@ namespace CodeBase.Inputs
         private static void LoseFlagPlacerInCastle(Castle castle) =>
             castle.LoseFlagPlacer();
 
-        private void SetFlagPlacerToCastle(Castle castle)
-        {
+        private void SetFlagPlacerToCastle(Castle castle) => 
             castle.BecomeFlagPlacer(_flagPlacer);
-        }
 
-        private void PlaceFlag(RaycastHit hit)
-        {
+        private void PlaceFlag(RaycastHit hit) => 
             _flagPlacer.Place(hit.point);
-        }
     }
 }
