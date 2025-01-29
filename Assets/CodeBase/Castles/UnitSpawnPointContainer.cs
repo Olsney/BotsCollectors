@@ -14,10 +14,8 @@ namespace CodeBase.Castles
         {
             _spawnPoints = new List<Vector3>();
             
-            foreach (Transform position in GetComponentsInChildren<Transform>())
-            {
+            foreach (Transform position in GetComponentsInChildren<Transform>()) 
                 _spawnPoints.Add(position.position);
-            }
         }
     }
 }

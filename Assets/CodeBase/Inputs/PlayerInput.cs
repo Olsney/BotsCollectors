@@ -65,8 +65,6 @@ namespace CodeBase.Inputs
                     if (_currentCastle == null)
                         return;
                     
-                    Debug.Log($"FlagPlacer is null - {_flagPlacer == null}");
-                    
                     PlaceFlag(hit);
                 }
             }
@@ -76,14 +74,10 @@ namespace CodeBase.Inputs
         {
             castle = _currentCastle;
 
-            Debug.Log($"{_castleLayerMaskNumber} - castle layerMask number");
             int hitLayer = 1 << hit.collider.gameObject.layer;
-            Debug.Log($"{hitLayer} - hit layerMask number");
 
             if (_castleLayerMaskNumber == hitLayer)
             {
-                Debug.Log($"we are in if");
-
                 bool result = hit.collider.TryGetComponent(out castle);
                 
                 if(result && _currentCastle != null)
@@ -107,15 +101,11 @@ namespace CodeBase.Inputs
 
         private void SetFlagPlacerToCastle(Castle castle)
         {
-            Debug.Log("We are int SetFlagPlacerToCastle method");
-
             castle.BecomeFlagPlacer(_flagPlacer);
         }
 
         private void PlaceFlag(RaycastHit hit)
         {
-            Debug.Log("We are int PlaceFlag method");
-            
             _flagPlacer.Place(hit.point);
         }
     }

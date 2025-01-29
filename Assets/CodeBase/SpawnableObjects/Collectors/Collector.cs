@@ -17,7 +17,8 @@ namespace CodeBase.SpawnableObjects.Collectors
         [SerializeField] private float _takeRadius;
         [SerializeField] private Vector3 _dropPlace;
         [SerializeField] private LayerMask _layerMask;
-        [SerializeField] private CastleFactory _castleFactory;
+        
+        private CastleFactory _castleFactory;
         
         private CollectorMover _collectorMover;
 
@@ -28,6 +29,9 @@ namespace CodeBase.SpawnableObjects.Collectors
             _collectorMover = GetComponent<CollectorMover>();
             _collectorMover.StopMove();
         }
+
+        public void Construct(CastleFactory castleFactory) => 
+            _castleFactory = castleFactory;
 
         public void Initialize(Vector3 position, Vector3 dropPlace)
         {
@@ -109,8 +113,10 @@ namespace CodeBase.SpawnableObjects.Collectors
             {
                 _collectorMover.SetTargetPoint(flagPosition);
 
-                if (CanBuild(flagPosition))
+                if (Vector3.Distance(transform.position, flagPosition) <= 3f)
                 {
+                    Debug.Log("We can build in collector!");
+                    
                     Castle castle = _castleFactory.Create(flagPosition);
                     Initialize(castle.transform.position, castle.DropPlacePoint);
                 }
@@ -124,6 +130,6 @@ namespace CodeBase.SpawnableObjects.Collectors
         }
 
         private bool CanBuild(Vector3 position) =>
-            DataExtension.SqrDistance(transform.position, position) < 3f;
+            transform.position.SqrDistance(position) < 3f;
     }
 }

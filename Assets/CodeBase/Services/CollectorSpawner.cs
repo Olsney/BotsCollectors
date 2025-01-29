@@ -11,6 +11,7 @@ namespace CodeBase.Services
         [SerializeField] private Collector _prefab;
         [SerializeField] private UnitSpawnPointContainer _container;
         [SerializeField] private Transform _dropPlace;
+        [SerializeField] private CastleFactory _castleFactory;
         
         public Vector3 DropPlace => _dropPlace.position;
         
@@ -24,6 +25,7 @@ namespace CodeBase.Services
             Vector3 spawnPoint = DataExtension.GetRandomPosition(_container.SpawnPoints);
             
             Collector collector = Instantiate(_prefab);
+            collector.Construct(_castleFactory);
             collector.Initialize(spawnPoint, _dropPlace.position);
         }
 

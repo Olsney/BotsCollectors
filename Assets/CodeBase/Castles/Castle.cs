@@ -30,6 +30,8 @@ namespace CodeBase.Castles
         private int _boughtCollectorsCount;
 
         private bool _isFarmingForNewCastle;
+        private bool _flagPlaced;
+        private Flag _flag;
 
         public FlagPlacer FlagPlacer { get; private set; }
         public Vector3 DropPlacePoint => _collectorSpawner.DropPlace;
@@ -62,6 +64,21 @@ namespace CodeBase.Castles
             _castleAreaTrigger.ResourceEntered -= OnResourceEntered;
         }
 
+        private void Update()
+        {
+            if (_flagPlaced)
+            {
+                Collector collector = GetRandomFreeCollector();
+                _isFarmingForNewCastle = true;
+
+                if (IsEnoughFreeCollectorsToBuild(collector))
+                {
+                    if (IsEnoughResourcesToBuild())
+                        BuildNewBase(collector);
+                }
+            }
+        }
+
         public void BecomeFlagPlacer(FlagPlacer flagPlacer)
         {
             FlagPlacer = flagPlacer;
@@ -90,7 +107,7 @@ namespace CodeBase.Castles
             mineral.gameObject.SetActive(false);
             _mineralsData.RemoveReservation(mineral);
 
-            if (CanBuyCollector())
+            if (CanBuyCollector()) 
                 BuyCollector();
 
             ResourceCollected?.Invoke(_minerals.Count);
@@ -98,23 +115,23 @@ namespace CodeBase.Castles
 
         private void OnFlagPlaced(Flag flag)
         {
-            _isFarmingForNewCastle = true;
-            
-            Collector collector = GetRandomFreeCollector();
-
-            if (CanBuild(collector) == false)
-                return;
-
-            if (_minerals.Count >= NewCastlePrice)
-            {
-                Pay(NewCastlePrice);
-                collector.BuildCastle(flag);
-            }
-            
-            _isFarmingForNewCastle = false;
+            _flag = flag;
+            _flagPlaced = true;
         }
 
-        private bool CanBuild(Collector collector) => 
+        private void BuildNewBase(Collector collector)
+        {
+            Pay(NewCastlePrice);
+            collector.BuildCastle(_flag);
+
+            _isFarmingForNewCastle = false;
+            _flagPlaced = false;
+        }
+
+        private bool IsEnoughResourcesToBuild() =>
+            _minerals.Count >= NewCastlePrice;
+
+        private bool IsEnoughFreeCollectorsToBuild(Collector collector) =>
             collector != null && _collectors.Count > MinCollectorsAmount;
 
         private void SetWorkToCollector(List<Mineral> minerals)
@@ -158,7 +175,6 @@ namespace CodeBase.Castles
         {
             List<Collector> freeCollectors = FindFreeCollectors();
 
-
             if (freeCollectors.Count == 0)
                 return default;
 
@@ -171,9 +187,6 @@ namespace CodeBase.Castles
         {
             while (enabled)
             {
-                if (_isFarmingForNewCastle)
-                    yield return null;
-                
                 if (_scanner.TryFindMinerals(out List<Mineral> minerals))
                     SetWorkToCollector(minerals);
 
@@ -181,8 +194,8 @@ namespace CodeBase.Castles
             }
         }
 
-        private bool CanBuyCollector() =>
-            _minerals.Count >= 3 && _boughtCollectorsCount < MaxCollectorsToBuy;
+        private bool CanBuyCollector() => 
+            _minerals.Count >= 3 && _boughtCollectorsCount < MaxCollectorsToBuy &&_isFarmingForNewCastle == false;
 
         private void BuyCollector()
         {
@@ -197,12 +210,8 @@ namespace CodeBase.Castles
         private void Pay(int price)
         {
             if (price <= 0 || _minerals.Count < price)
-            {
-                Debug.LogError($"Wrong price - {price} is cannot be payed.");
-
                 return;
-            }
-            
+
             _minerals.RemoveRange(0, price);
         }
 
