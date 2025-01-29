@@ -68,6 +68,8 @@ namespace CodeBase.SpawnableObjects.Collectors
 
                         yield break;
                     }
+                    
+                    GoBase();
                 }
 
                 yield return null;

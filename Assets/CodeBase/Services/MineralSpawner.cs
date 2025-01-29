@@ -25,7 +25,7 @@ namespace CodeBase.Services
 
         private IEnumerator StartResourceSpawning()
         {
-            float delay = 5f;
+            float delay = 1f;
             WaitForSeconds wait = new WaitForSeconds(delay);
 
             while (enabled)
