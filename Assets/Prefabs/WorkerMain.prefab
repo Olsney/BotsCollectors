@@ -568,6 +568,7 @@ GameObject:
   - component: {fileID: 1691461118197076262}
   - component: {fileID: 2092133393957859380}
   - component: {fileID: 3806843492784802505}
+  - component: {fileID: -1096095542119574010}
   m_Layer: 3
   m_Name: WorkerMain
   m_TagString: Player
@@ -637,12 +638,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68b3661270454cd48f185e0fff834f8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _permissibleDifference: 1
+  _permissibleResourceDistanceDifference: 1
   _takeRadius: 1.5
   _dropPlace: {x: 0.152, y: 0.9043999, z: -5.3312}
   _layerMask:
     serializedVersion: 2
     m_Bits: 64
+  _castleFactory: {fileID: -1096095542119574010}
 --- !u!65 &2092133393957859380
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -691,6 +693,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-1096095542119574010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5881325448778966036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e421759930784c669162e5957d20f885, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _castlePrefab: {fileID: 1360966120394746568, guid: 7f7eecbb959d861478178e943f875cdb, type: 3}
 --- !u!1 &6194884626689562916
 GameObject:
   m_ObjectHideFlags: 0

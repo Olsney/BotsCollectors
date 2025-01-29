@@ -17,8 +17,8 @@ namespace CodeBase.SpawnableObjects.Collectors
         [SerializeField] private float _takeRadius;
         [SerializeField] private Vector3 _dropPlace;
         [SerializeField] private LayerMask _layerMask;
+        [SerializeField] private CastleFactory _castleFactory;
         
-        private CastleFactory _castleFactory;
         
         private CollectorMover _collectorMover;
 
@@ -30,8 +30,6 @@ namespace CodeBase.SpawnableObjects.Collectors
             _collectorMover.StopMove();
         }
 
-        public void Construct(CastleFactory castleFactory) => 
-            _castleFactory = castleFactory;
 
         public void Initialize(Vector3 position, Vector3 dropPlace)
         {
