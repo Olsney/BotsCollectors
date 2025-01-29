@@ -14,10 +14,8 @@ namespace CodeBase.Services
         
         public Vector3 DropPlace => _dropPlace.position;
         
-        public void SpawnCollectors()
-        {
+        public void SpawnCollectors() => 
             StartCoroutine(CollectorsSpawningJob());
-        }
 
         public void Spawn()
         {

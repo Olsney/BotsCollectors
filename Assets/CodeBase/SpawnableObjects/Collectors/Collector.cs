@@ -115,8 +115,6 @@ namespace CodeBase.SpawnableObjects.Collectors
 
                 if (Vector3.Distance(transform.position, flagPosition) <= 3f)
                 {
-                    Debug.Log("We can build in collector!");
-                    
                     Castle castle = _castleFactory.Create(flagPosition);
                     Initialize(castle.transform.position, castle.DropPlacePoint);
                 }

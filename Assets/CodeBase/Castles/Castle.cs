@@ -66,17 +66,8 @@ namespace CodeBase.Castles
 
         private void Update()
         {
-            if (_flagPlaced)
-            {
-                Collector collector = GetRandomFreeCollector();
-                _isFarmingForNewCastle = true;
-
-                if (IsEnoughFreeCollectorsToBuild(collector))
-                {
-                    if (IsEnoughResourcesToBuild())
-                        BuildNewBase(collector);
-                }
-            }
+            if (_flagPlaced) 
+                TryBuildNewBase();
         }
 
         public void BecomeFlagPlacer(FlagPlacer flagPlacer)
@@ -89,6 +80,18 @@ namespace CodeBase.Castles
         {
             FlagPlacer.Placed -= OnFlagPlaced;
             FlagPlacer = null;
+        }
+
+        private void TryBuildNewBase()
+        {
+            Collector collector = GetRandomFreeCollector();
+            _isFarmingForNewCastle = true;
+
+            if (IsEnoughFreeCollectorsToBuild(collector))
+            {
+                if (IsEnoughResourcesToBuild())
+                    BuildNewBase(collector);
+            }
         }
 
         private void OnCollectorEntered(Collector collector)
@@ -187,15 +190,18 @@ namespace CodeBase.Castles
         {
             while (enabled)
             {
-                if (_scanner.TryFindMinerals(out List<Mineral> minerals))
+                if (TryFindMinerals(out List<Mineral> minerals))
                     SetWorkToCollector(minerals);
 
                 yield return null;
             }
         }
 
+        private bool TryFindMinerals(out List<Mineral> minerals) => 
+            _scanner.TryFindMinerals(out minerals);
+
         private bool CanBuyCollector() => 
-            _minerals.Count >= 3 && _boughtCollectorsCount < MaxCollectorsToBuy &&_isFarmingForNewCastle == false;
+            _minerals.Count >= CollectorPrice && _boughtCollectorsCount < MaxCollectorsToBuy &&_isFarmingForNewCastle == false;
 
         private void BuyCollector()
         {
@@ -209,7 +215,7 @@ namespace CodeBase.Castles
 
         private void Pay(int price)
         {
-            if (price <= 0 || _minerals.Count < price)
+            if (IsPriceIncorrect(price))
                 return;
 
             _minerals.RemoveRange(0, price);
@@ -220,5 +226,8 @@ namespace CodeBase.Castles
 
         private void IncreaseBoughtCollectorsCount() =>
             _boughtCollectorsCount++;
+
+        private bool IsPriceIncorrect(int price) => 
+            price <= 0 || _minerals.Count < price;
     }
 }

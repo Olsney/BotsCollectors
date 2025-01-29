@@ -15,9 +15,7 @@ namespace CodeBase.Services
             return castle;
         }
 
-        public void Construct(Castle castlePrefab)
-        {
+        public void Construct(Castle castlePrefab) => 
             _castlePrefab = castlePrefab;
-        }
     }
 }
