@@ -2682,6 +2682,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1581297637}
     - target: {fileID: 2252307336470727563, guid: 05111926411527f4a9dd857745e70d62, type: 3}
+      propertyPath: _firstCastle
+      value: 
+      objectReference: {fileID: 1581297637}
+    - target: {fileID: 2252307336470727563, guid: 05111926411527f4a9dd857745e70d62, type: 3}
       propertyPath: _castlePrefab
       value: 
       objectReference: {fileID: 1360966120394746568, guid: 7f7eecbb959d861478178e943f875cdb, type: 3}

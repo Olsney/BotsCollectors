@@ -5,15 +5,13 @@ using CodeBase.Flags;
 using CodeBase.Services;
 using CodeBase.SpawnableObjects.Minerals;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace CodeBase.SpawnableObjects.Collectors
 {
     [RequireComponent(typeof(CollectorMover))]
     public class Collector : MonoBehaviour
     {
-        [FormerlySerializedAs("_permissibleDifference")] [SerializeField] private float _permissibleResourceDistanceDifference;
-
+        [SerializeField] private float _permissibleResourceDistanceDifference = 1;
         [SerializeField] private float _takeRadius;
         [SerializeField] private Vector3 _dropPlace;
         [SerializeField] private LayerMask _layerMask;
@@ -27,7 +25,7 @@ namespace CodeBase.SpawnableObjects.Collectors
         private void Awake()
         {
             _collectorMover = GetComponent<CollectorMover>();
-            _collectorMover.StopMove();
+            StopMove();
         }
 
 
@@ -41,25 +39,19 @@ namespace CodeBase.SpawnableObjects.Collectors
         {
             IsWorking = true;
 
-            _collectorMover.SetTargetPoint(destionation);
+            MoveTo(destionation);
 
             StartCoroutine(InteractWithMineral(destionation));
         }
 
-        public void BuildCastle(Flag flag)
-        {
+        public void BuildCastle(Flag flag) => 
             StartCoroutine(BuildCastleJob(flag));
-        }
 
         private IEnumerator InteractWithMineral(Vector3 destionation)
         {
-            float delay = 0.1f;
-            WaitForSeconds wait = new(delay);
-
             while (enabled)
             {
-                if (DataExtension.SqrDistance(transform.position, destionation) <=
-                    _permissibleResourceDistanceDifference)
+                if (IsCloseEnough(destionation))
                 {
                     if (TryFindMineral(out Mineral mineral))
                     {
@@ -78,12 +70,9 @@ namespace CodeBase.SpawnableObjects.Collectors
 
         public void FinishWork()
         {
-            _collectorMover.StopMove();
+            StopMove();
             IsWorking = false;
         }
-
-        private void GoBase() =>
-            _collectorMover.SetTargetPoint(_dropPlace);
 
         private bool TryFindMineral(out Mineral mineral)
         {
@@ -129,5 +118,17 @@ namespace CodeBase.SpawnableObjects.Collectors
 
         private bool CanBuild(Vector3 position) =>
             transform.position.SqrDistance(position) < 3f;
+
+        private void StopMove() => 
+            _collectorMover.StopMove();
+
+        private void MoveTo(Vector3 destionation) => 
+            _collectorMover.SetTargetPoint(destionation);
+
+        private bool IsCloseEnough(Vector3 destionation) => 
+            DataExtension.SqrDistance(transform.position, destionation) <= _permissibleResourceDistanceDifference;
+
+        private void GoBase() =>
+            MoveTo(_dropPlace);
     }
 }

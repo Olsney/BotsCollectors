@@ -8,22 +8,20 @@ namespace CodeBase
 {
     public class GameBootstrapper : MonoBehaviour
     {
-        [FormerlySerializedAs("castle")] [FormerlySerializedAs("_collectorsBase")] [SerializeField] private Castle _castle;
+        [SerializeField] private Castle _firstCastle;
         [SerializeField] private MineralContainer _mineralContainer; 
         [SerializeField] private MineralSpawner _mineralSpawner;
         [SerializeField] private Castle _castlePrefab;
         [SerializeField] private CastleFactory _castleFactory;
 
-        private void Awake()
-        {
+        private void Awake() => 
             InitGameWorld();
-        }
 
         private void InitGameWorld()
         {
             _mineralContainer.Construct();
             _mineralSpawner.Construct(_mineralContainer);
-            _castle.Construct();
+            _firstCastle.Construct();
             _castleFactory.Construct(_castlePrefab);
         }
     }
